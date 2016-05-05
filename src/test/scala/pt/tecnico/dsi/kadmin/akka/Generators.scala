@@ -44,8 +44,11 @@ trait Generators {
   } yield salts.mkString(start = "\"", sep = ",", end = "\"")
 
   val genPolicyName = alphaStr.suchThat(_.nonEmpty)
-  val genPrincipalName = alphaStr.suchThat(_.nonEmpty)
 
+  val genPrincipalName = for {
+    admin <- frequency(2 -> "/admin", 8 -> "")
+    name <- alphaStr.suchThat(_.nonEmpty)
+  } yield s"$name$admin"
 
   val genExpireDate = genExpirationDateTime.map(ts => s"-expire $ts")
   val genPasswordExpireDate = genExpirationDateTime.map(ts => s"-pwexpire $ts")

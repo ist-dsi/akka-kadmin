@@ -8,7 +8,6 @@
 [![Scaladoc](http://javadoc-badge.appspot.com/pt.tecnico.dsi/akka-kadmin_2.11.svg?label=scaladoc&style=plastic&maxAge=604800)](https://ist-dsi.github.io/akka-kadmin/latest/api/#pt.tecnico.dsi.akka-kadmin.package)
 [![license](http://img.shields.io/:license-MIT-blue.svg)](LICENSE)
 
-
 [Latest scaladoc documentation](http://ist-dsi.github.io/akka-kadmin/latest/api/)
 
 ## Install

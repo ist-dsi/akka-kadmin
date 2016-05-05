@@ -68,10 +68,9 @@ class KadminActor(val settings: Settings = new Settings()) extends Actor with Ac
     case CreateKeytab(options, principal , deliveryId) =>
       processExpectOutput(kadmin.createKeytab(options, principal), deliveryId)
     case ObtainKeytab(principal , deliveryId) =>
-      val recipient = sender()
       kadmin.obtainKeytab(principal) match {
-        case Right(keytab) => recipient ! KeytabResponse(keytab, deliveryId)
-        case Left(errorCase) => recipient ! Failed(errorCase, deliveryId)
+        case Right(keytab) => sender() ! KeytabResponse(keytab, deliveryId)
+        case Left(errorCase) => sender() ! Failed(errorCase, deliveryId)
       }
     //=================================================================================
     //==== Policy actions =============================================================

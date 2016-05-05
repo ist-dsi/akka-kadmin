@@ -70,7 +70,7 @@ class DeliveryIdSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory.lo
     }
   }
 
-  /*property("A Obtain keytab request can only be responded with a KeytabResponse or with a Failed") {
+  property("A Obtain keytab request can only be responded with a KeytabResponse or with a Failed") {
     forAll(genGetPrincipal) { request: Request =>
       val future = (kadminActor ? request).mapTo[Response]
       whenReady(future){ response: Response =>
@@ -79,7 +79,7 @@ class DeliveryIdSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory.lo
         }
       }
     }
-  }*/
+  }
 
   property("A GetPolicy request can only be responded with a PolicyResponse or with a Failed") {
     forAll(genGetPolicy) { request: Request =>
