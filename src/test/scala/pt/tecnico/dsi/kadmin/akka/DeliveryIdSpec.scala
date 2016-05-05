@@ -5,6 +5,7 @@ import akka.pattern.ask
 import akka.testkit.{ImplicitSender, TestKit}
 import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
+import org.scalacheck.Gen
 import org.scalacheck.Prop._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
@@ -37,60 +38,59 @@ class DeliveryIdSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory.lo
     interval = scaled((timeout.duration / 15) max (100 millis))
   )
 
-  property("the deliveryId of the response must always be equal to the deliveryId of the request") {
-    forAll(genRequest) { request: Request =>
+
+  def requestResponseForAll(gen: Gen[Request])(test: (Request, Response) => Unit): Unit = {
+    forAll(gen) { request: Request =>
       val future = (kadminActor ? request).mapTo[Response]
       whenReady(future){ response: Response =>
-        response.deliveryId shouldBe request.deliveryId
+        test(request, response)
       }
+    }
+  }
+
+  property("the deliveryId of the response must always be equal to the deliveryId of the request") {
+    requestResponseForAll(genRequest){ case (request, response) =>
+        response.deliveryId shouldBe request.deliveryId
     }
   }
 
   property("A request that generates a Expect[Either[ErrorCase, Unit]] can only be responded with a Successful or with a Failed") {
-    forAll(genUnitRequest) { request: Request =>
-      val future = (kadminActor ? request).mapTo[Response]
-      whenReady(future){ response: Response =>
-        response should (
-          be (a [Successful])
-            or
-          be (a [Failed])
-        )
-      }
+    requestResponseForAll(genUnitRequest){ case (request, response) =>
+      response should (
+        be (a [Successful])
+         or
+        be (a [Failed])
+      )
     }
   }
 
   property("A GetPrincipal request can only be responded with a PrincipalResponse or with a Failed") {
-    forAll(genGetPrincipal) { request: Request =>
-      val future = (kadminActor ? request).mapTo[Response]
-      whenReady(future){ response: Response =>
-        collect(response.getClass.getName) {
-          (response.isInstanceOf[PrincipalResponse] ?= true) || (response.isInstanceOf[Failed] ?= true)
-        }
-      }
+    requestResponseForAll(genGetPrincipal){ case (request, response) =>
+      response should (
+        be (a [PrincipalResponse])
+          or
+        be (a [Failed])
+      )
     }
   }
 
   property("A Obtain keytab request can only be responded with a KeytabResponse or with a Failed") {
-    forAll(genGetPrincipal) { request: Request =>
-      val future = (kadminActor ? request).mapTo[Response]
-      whenReady(future){ response: Response =>
-        collect(response.getClass.getName) {
-          (response.isInstanceOf[KeytabResponse] ?= true) || (response.isInstanceOf[Failed] ?= true)
-        }
-      }
+    requestResponseForAll(genGetPrincipal){ case (request, response) =>
+      response should (
+        be (a [KeytabResponse])
+          or
+        be (a [Failed])
+      )
     }
   }
 
   property("A GetPolicy request can only be responded with a PolicyResponse or with a Failed") {
-    forAll(genGetPolicy) { request: Request =>
-      val future = (kadminActor ? request).mapTo[Response]
-      whenReady(future){ response: Response =>
-        response should (
-          be (a [PolicyResponse])
-            or
-          be (a [Failed])
-        )
-      }
+    requestResponseForAll(genGetPrincipal){ case (request, response) =>
+      response should (
+        be (a [PolicyResponse])
+         or
+        be (a [Failed])
+      )
     }
   }
 }

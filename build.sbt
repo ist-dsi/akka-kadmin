@@ -1,6 +1,6 @@
 organization := "pt.tecnico.dsi"
 name := "akka-kadmin"
-version := "0.1.0"
+version := "0.1.1"
 
 initialize := {
   val required = "1.8"
