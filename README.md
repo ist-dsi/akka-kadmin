@@ -3,8 +3,8 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/5718ed91fcd19a00454417b5/badge.svg?style=plastic&maxAge=604800)](https://www.versioneye.com/user/projects/5718ed91fcd19a00454417b5)
 [![Reference Status](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.11/reference_badge.svg?style=plastic&maxAge=604800)](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.11/references)
 [![Build Status](https://travis-ci.org/ist-dsi/akka-kadmin.svg?branch=master&style=plastic&maxAge=604800)](https://travis-ci.org/ist-dsi/akka-kadmin)
-[![Codacy Badge](https://api.codacy.com/project/badge/coverage/)](https://www.codacy.com/app/IST-DSI/akka-kadmin)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/)](https://www.codacy.com/app/IST-DSI/akka-kadmin)
+[![Codacy Badge](https://api.codacy.com/project/badge/coverage/f24fdb8cf47a4db180c9187c476b23f0)](https://www.codacy.com/app/IST-DSI/akka-kadmin)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/f24fdb8cf47a4db180c9187c476b23f0)](https://www.codacy.com/app/IST-DSI/akka-kadmin)
 [![Scaladoc](http://javadoc-badge.appspot.com/pt.tecnico.dsi/akka-kadmin_2.11.svg?label=scaladoc&style=plastic&maxAge=604800)](https://ist-dsi.github.io/akka-kadmin/latest/api/#pt.tecnico.dsi.akka-kadmin.package)
 [![license](http://img.shields.io/:license-MIT-blue.svg)](LICENSE)
 
