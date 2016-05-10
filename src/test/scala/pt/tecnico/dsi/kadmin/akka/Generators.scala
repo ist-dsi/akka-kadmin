@@ -188,6 +188,7 @@ trait Generators {
   def genUnitRequest: Gen[Request] = oneOf(
     genAddPrincipal, genModifyPrincipal, genExpirePrincipal, genExpirePrincipalPassword,
     genDeletePrincipal, genCheckPrincipalPassword, genChangePrincipalPassword,
+    genCreateKeytab,
     genAddPolicy, genModifyPolicy, genDeletePolicy
   )
 }

@@ -13,7 +13,7 @@
 ## Install
 Add the following dependency to your `build.sbt`:
 ```sbt
-libraryDependencies += "pt.tecnico.dsi" %% "akka-kadmin" % "0.1.0"
+libraryDependencies += "pt.tecnico.dsi" %% "akka-kadmin" % "0.2.0"
 ```
 We use [semantic versioning](http://semver.org).
 

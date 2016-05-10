@@ -1,6 +1,6 @@
 organization := "pt.tecnico.dsi"
 name := "akka-kadmin"
-version := "0.1.1"
+//version := "0.2.0"
 
 initialize := {
   val required = "1.8"
@@ -25,7 +25,7 @@ scalacOptions ++= Seq(
 
 val akkaVersion = "2.4.3"
 libraryDependencies ++= Seq(
-  "pt.tecnico.dsi" %% "kadmin" % "4.1.0",
+  "pt.tecnico.dsi" %% "kadmin" % "4.2.1",
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
 
   //Logging
@@ -64,3 +64,20 @@ pomExtra :=
       <url>https://github.com/Lasering</url>
     </developer>
   </developers>
+
+import ReleaseTransformations._
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  //runTest, //TODO: how to run ./test.sh
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  ReleaseStep(action = Command.process("publishSigned", _)),
+  ReleaseStep(action = Command.process("ghpagesPushSite", _)),
+  setNextVersion,
+  commitNextVersion,
+  ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
+  pushChanges
+)
