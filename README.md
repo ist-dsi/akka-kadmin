@@ -1,6 +1,6 @@
 # akka-kadmin
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/pt.tecnico.dsi/akka-kadmin_2.11/badge.svg?maxAge=604800)](https://maven-badges.herokuapp.com/maven-central/pt.tecnico.dsi/akka-kadmin_2.11)
-[![Dependency Status](https://www.versioneye.com/user/projects/5718ed91fcd19a00454417b5/badge.svg?style=plastic&maxAge=604800)](https://www.versioneye.com/user/projects/5718ed91fcd19a00454417b5)
+[![Dependency Status](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.11/badge.svg?style=plastic&maxAge=604800)](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.11)
 [![Reference Status](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.11/reference_badge.svg?style=plastic&maxAge=604800)](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.11/references)
 [![Build Status](https://travis-ci.org/ist-dsi/akka-kadmin.svg?branch=master&style=plastic&maxAge=604800)](https://travis-ci.org/ist-dsi/akka-kadmin)
 [![Codacy Badge](https://api.codacy.com/project/badge/coverage/f24fdb8cf47a4db180c9187c476b23f0)](https://www.codacy.com/app/IST-DSI/akka-kadmin)
@@ -13,7 +13,7 @@
 ## Install
 Add the following dependency to your `build.sbt`:
 ```sbt
-libraryDependencies += "pt.tecnico.dsi" %% "akka-kadmin" % "0.2.0"
+libraryDependencies += "pt.tecnico.dsi" %% "akka-kadmin" % "0.3.0"
 ```
 We use [semantic versioning](http://semver.org).
 

@@ -7,6 +7,10 @@ object Kadmin {
     def deliveryId: Long
   }
 
+  //If removeId is a Some then just the result for (senderPath, removeId) is removed
+  //Otherwise all the results for the senderPath are removed.
+  case class RemoveDeduplicationResult(removeId: Option[Long], deliveryId: Long) extends Request
+
   case class AddPrincipal(options: String, principal: String, deliveryId: Long) extends Request
   case class ModifyPrincipal(options: String, principal: String, deliveryId: Long) extends Request
   case class ExpirePrincipal(principal: String, expirationDate: ExpirationDateTime, deliveryId: Long) extends Request
@@ -23,7 +27,6 @@ object Kadmin {
   case class ModifyPolicy(options: String, policy: String, deliveryId: Long) extends Request
   case class DeletePolicy(policy: String, deliveryId: Long) extends Request
   case class GetPolicy(policy: String, deliveryId: Long) extends Request
-
 
   sealed trait Response {
     def deliveryId: Long

@@ -1,13 +1,18 @@
 organization := "pt.tecnico.dsi"
 name := "akka-kadmin"
-//version := "0.2.0"
 
+val javaVersion = "1.8"
 initialize := {
-  val required = "1.8"
   val current  = sys.props("java.specification.version")
-  assert(current == required, s"Unsupported JDK: java.specification.version $current != $required")
+  assert(current == javaVersion, s"Unsupported JDK: expected JDK $javaVersion installed, but instead got JDK $current.")
 }
-javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
+javacOptions ++= Seq(
+  "-source", javaVersion,
+  "-target", javaVersion,
+  "-Xlint",
+  "-encoding", "UTF-8",
+  "-Dfile.encoding=utf-8"
+)
 
 scalaVersion := "2.11.8"
 scalacOptions ++= Seq(
@@ -23,10 +28,11 @@ scalacOptions ++= Seq(
   "-Ywarn-dead-code"                //Warn when dead code is identified.
 )
 
-val akkaVersion = "2.4.3"
+val akkaVersion = "2.4.7"
 libraryDependencies ++= Seq(
-  "pt.tecnico.dsi" %% "kadmin" % "4.2.1",
+  "pt.tecnico.dsi" %% "kadmin" % "5.0.0",
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+  "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
 
   //Logging
   "com.typesafe.akka" %% "akka-slf4j" % akkaVersion % "test",
@@ -36,7 +42,6 @@ libraryDependencies ++= Seq(
   "org.scalacheck" %% "scalacheck" % "1.12.5" % "test",
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test"
 )
-
 resolvers += Opts.resolver.sonatypeReleases
 
 autoAPIMappings := true
@@ -54,6 +59,7 @@ scmInfo := Some(ScmInfo(homepage.value.get, git.remoteRepo.value))
 publishMavenStyle := true
 publishTo := Some(if (isSnapshot.value) Opts.resolver.sonatypeSnapshots else Opts.resolver.sonatypeStaging)
 publishArtifact in Test := false
+sonatypeProfileName := organization.value
 
 pomIncludeRepository := { _ => false }
 pomExtra :=
@@ -70,14 +76,13 @@ releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
   runClean,
-  //runTest, //TODO: how to run ./test.sh
+  ReleaseStep(action = Command.process("doc", _)),
+  //runTest, how to run ./test.sh??
   setReleaseVersion,
-  commitReleaseVersion,
   tagRelease,
-  ReleaseStep(action = Command.process("publishSigned", _)),
   ReleaseStep(action = Command.process("ghpagesPushSite", _)),
-  setNextVersion,
-  commitNextVersion,
-  ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
-  pushChanges
+  ReleaseStep(action = Command.process("publishSigned", _)),
+  ReleaseStep(action = Command.process("sonatypeRelease", _)),
+  pushChanges,
+  setNextVersion
 )
