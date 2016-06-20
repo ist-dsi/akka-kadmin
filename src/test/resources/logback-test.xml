@@ -15,8 +15,10 @@
         </encoder>
     </appender>
 
-    <logger name="org.scalatest" level="DEBUG" />
-    <logger name="work.martins.simon.expect" level="WARN" />
+    <logger name="org.scalatest"                level="DEBUG" />
+    <logger name="work.martins.simon.expect"    level="INFO" />
+    <logger name="akka.persistence"             level="DEBUG"/>
+    <logger name="org.iq80.leveldb"             level="DEBUG"/>
 
     <root level="DEBUG">
         <!-- <appender-ref ref="FILE"/> -->

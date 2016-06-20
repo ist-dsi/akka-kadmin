@@ -3,11 +3,6 @@
 source `dirname $0`/configureKerberosClient.sh
 
 cd /tmp/akka-kadmin
-sbt coverage test
-sbt coverageReport
-sbt coverageAggregate
-sbt codacyCoverage
 
-#echo "RunOnly"
-#sbt <<<"testOnly pt.tecnico.dsi.kadmin.PrincipalSpec"
-#echo "After run"
+sbt <<<"testOnly pt.tecnico.dsi.kadmin.akka.DeduplicationSpec"
+#sbt clean coverage test coverageReport codacyCoverage

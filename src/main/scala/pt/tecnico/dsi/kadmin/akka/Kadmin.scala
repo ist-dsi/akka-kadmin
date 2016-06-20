@@ -11,12 +11,16 @@ object Kadmin {
   //Otherwise all the results for the senderPath are removed.
   case class RemoveDeduplicationResult(removeId: Option[Long], deliveryId: Long) extends Request
 
-  case class AddPrincipal(options: String, principal: String, deliveryId: Long) extends Request
+  case class AddPrincipal(options: String, principal: String,
+                          newPassword: Option[String] = None, randKey: Boolean = false, keysalt: Option[String] = None,
+                          deliveryId: Long) extends Request
   case class ModifyPrincipal(options: String, principal: String, deliveryId: Long) extends Request
   case class ExpirePrincipal(principal: String, expirationDate: ExpirationDateTime, deliveryId: Long) extends Request
   case class ExpirePrincipalPassword(principal: String, expirationDate: ExpirationDateTime, force: Boolean = false, deliveryId: Long) extends Request
   case class GetPrincipal(principal: String, deliveryId: Long) extends Request
-  case class ChangePrincipalPassword(principal: String, newPassword: Option[String] = None, randKey: Boolean = false, keysalt: Option[String] = None, deliveryId: Long) extends Request
+  case class ChangePrincipalPassword(principal: String,
+                                     newPassword: Option[String] = None, randKey: Boolean = false, keysalt: Option[String] = None,
+                                     deliveryId: Long) extends Request
   case class DeletePrincipal(principal: String, deliveryId: Long) extends Request
   case class CheckPrincipalPassword(principal: String, password: String, deliveryId: Long) extends Request
 

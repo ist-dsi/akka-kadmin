@@ -1,6 +1,11 @@
 package pt.tecnico.dsi.kadmin.akka
 
+import java.util.concurrent.TimeUnit
+
 import com.typesafe.config.{Config, ConfigFactory}
+import pt.tecnico.dsi.kadmin.{Settings => KadminSettings}
+
+import scala.concurrent.duration.Duration
 
 /**
   * This class holds all the settings that parameterize akka-kadmin.
@@ -34,7 +39,25 @@ class Settings(config: Config = ConfigFactory.load()) {
   }
   import akkaKadminConfig._
 
-  val performDeduplication = getBoolean("perform-best-effort-deduplication")
+  val removeDelay = Duration(getDuration("remove-delay", TimeUnit.MILLISECONDS), TimeUnit.MILLISECONDS)
+
+  val saveSnapshotInterval = Duration(getDuration("save-snapshot-interval", TimeUnit.MILLISECONDS), TimeUnit.MILLISECONDS)
+
+  val kadminSettings: KadminSettings = {
+    val path = "kadmin"
+    if (akkaKadminConfig.hasPath(path)) {
+      val c = if (config.hasPath(path)) {
+        akkaKadminConfig.getConfig(path).withFallback(config.getConfig(path))
+      } else {
+        akkaKadminConfig.getConfig(path)
+      }
+      new KadminSettings(c.atPath(path))
+    } else if (config.hasPath(path)) {
+      new KadminSettings(config.getConfig(path).atPath(path))
+    } else {
+      new KadminSettings()
+    }
+  }
 
   override def toString: String = akkaKadminConfig.root.render
 }

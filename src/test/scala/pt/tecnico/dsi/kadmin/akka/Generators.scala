@@ -1,21 +1,17 @@
 package pt.tecnico.dsi.kadmin.akka
 
-import java.util.concurrent.TimeUnit
-
 import org.joda.time.DateTime
 import org.scalacheck.Arbitrary._
 import org.scalacheck.Gen
 import org.scalacheck.Gen._
-import pt.tecnico.dsi.kadmin.{AbsoluteDateTime, ExpirationDateTime, Never, Now, RelativeDateTime}
 import pt.tecnico.dsi.kadmin.akka.Kadmin._
+import pt.tecnico.dsi.kadmin.{AbsoluteDateTime, ExpirationDateTime, Never}
 
 import scala.collection.JavaConverters._
-import scala.concurrent.duration.Duration
 
 trait Generators {
-  val genRelativeDateTime = posNum[Int].map(i => Duration(i.toLong, TimeUnit.SECONDS)).map(new RelativeDateTime(_))
   val genAbsoluteDateTime = posNum[Long].map(new DateTime(_)).map(new AbsoluteDateTime(_))
-  val genExpirationDateTime: Gen[ExpirationDateTime] = oneOf(const(Never), const(Now()), genRelativeDateTime, genAbsoluteDateTime)
+  val genExpirationDateTime: Gen[ExpirationDateTime] = oneOf(const(Never), genAbsoluteDateTime)
   val genDurationString = for {
     n <- posNum[Int]
     unit <- oneOf("hours", "minutes", "seconds")
@@ -63,12 +59,12 @@ trait Generators {
 
   val possibleAttributes = for {
     attribute <- Seq(
-                   "allow_postdated", "allow_forwardable", "allow_renewable", "allow_proxiable", "allow_dup_skey",
-                   "requires_preauth", "requires_hwauth", "ok_as_delegate",
-                   "allow_svr", "allow_tgs_req", "allow_tix",
-                   "needchange", "password_changing_service",
-                   "ok_to_auth_as_delegate", "no_auth_data_required"
-                 )
+      "allow_postdated", "allow_forwardable", "allow_renewable", "allow_proxiable", "allow_dup_skey",
+      "requires_preauth", "requires_hwauth", "ok_as_delegate",
+      "allow_svr", "allow_tgs_req", "allow_tix",
+      "needchange", "password_changing_service",
+      "ok_to_auth_as_delegate", "no_auth_data_required"
+    )
     allowOrDeny <- Seq("+", "-")
   } yield s"$allowOrDeny$attribute"
 
@@ -99,7 +95,7 @@ trait Generators {
     options <- genAddPrincipalOptions
     principal <- genPrincipalName
     deliveryId <- arbitrary[Long]
-  } yield AddPrincipal(options, principal, deliveryId)
+  } yield AddPrincipal(options, principal, deliveryId = deliveryId)
   val genModifyPrincipalOptions: Gen[String] = for {
     someOptions <- someOf(genUnlock +: addPrincipalOptionsGens)
     options <- sequence(someOptions)

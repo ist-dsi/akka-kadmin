@@ -30,10 +30,11 @@ scalacOptions ++= Seq(
 
 val akkaVersion = "2.4.7"
 libraryDependencies ++= Seq(
-  "pt.tecnico.dsi" %% "kadmin" % "5.0.0",
+  "pt.tecnico.dsi" %% "kadmin" % "5.3.0",
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
-
+  "org.iq80.leveldb" % "leveldb" % "0.7",
+  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
   //Logging
   "com.typesafe.akka" %% "akka-slf4j" % akkaVersion % "test",
   "ch.qos.logback" % "logback-classic" % "1.1.7" % "test",
@@ -43,6 +44,9 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test"
 )
 resolvers += Opts.resolver.sonatypeReleases
+
+//This is needed for LevelDB to work in tests
+fork in Test := true
 
 autoAPIMappings := true
 scalacOptions in (Compile,doc) ++= Seq("-groups", "-implicits", "-diagrams")

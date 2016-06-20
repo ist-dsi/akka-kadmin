@@ -23,14 +23,7 @@ class DeliveryIdSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory.lo
   with ImplicitSender
   with Generators {
 
-  def createConfigFor(principal: String) = ConfigFactory.parseString(s"""
-    kadmin {
-      realm = "EXAMPLE.COM"
-      principal = "$principal"
-      password = "MITiys4K5"
-    }""")
-
-  val kadminActor = system.actorOf(Props(classOf[KadminActor], createConfigFor("kadmin/admin")))
+  val kadminActor = system.actorOf(Props(new KadminActor()))
   implicit val timeout = Timeout(15 seconds)
   implicit val patience = PatienceConfig(
     timeout = scaled(timeout.duration),
@@ -62,7 +55,7 @@ class DeliveryIdSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory.lo
       response.deliveryId shouldBe request.deliveryId
     }
   }
-
+  /*
   property("A request that generates a Expect[Either[ErrorCase, Unit]] can only be responded with a Successful or with a Failed") {
     requestResponseForAll(genUnitRequest){ case (_, response) =>
       response.shouldBeFailedOr[Successful]
@@ -75,15 +68,16 @@ class DeliveryIdSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory.lo
     }
   }
 
-  property("A Obtain keytab request can only be responded with a KeytabResponse or with a Failed") {
-    requestResponseForAll(genGetPrincipal){ case (_, response) =>
+  property("A ObtainKeytab request can only be responded with a KeytabResponse or with a Failed") {
+    requestResponseForAll(genObtainKeytab){ case (_, response) =>
       response.shouldBeFailedOr[KeytabResponse]
     }
   }
 
   property("A GetPolicy request can only be responded with a PolicyResponse or with a Failed") {
-    requestResponseForAll(genGetPrincipal){ case (_, response) =>
+    requestResponseForAll(genGetPolicy){ case (_, response) =>
       response.shouldBeFailedOr[PolicyResponse]
     }
   }
+  */
 }
