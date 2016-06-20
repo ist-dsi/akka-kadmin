@@ -6,7 +6,7 @@ import akka.pattern.pipe
 import akka.persistence.{PersistentActor, RecoveryCompleted, SnapshotOffer}
 import com.typesafe.config.Config
 import pt.tecnico.dsi.kadmin.akka.KadminActor.{RemoveResult, SaveSnapshot, SideEffectResult}
-import pt.tecnico.dsi.kadmin.akka.Kadmin.Response
+import pt.tecnico.dsi.kadmin.akka.Kadmin._
 import pt.tecnico.dsi.kadmin.{ErrorCase, Policy, Principal, UnknownError, Kadmin => KadminCore}
 import work.martins.simon.expect.core.Expect
 
@@ -23,7 +23,6 @@ object KadminActor {
 class KadminActor(val settings: Settings = new Settings()) extends Actor with PersistentActor with ActorLogging {
   def this(config: Config) = this(new Settings(config))
 
-  import Kadmin._
   import settings._
   //We will execute the kadmin expects in this context
   import context.dispatcher
@@ -35,7 +34,7 @@ class KadminActor(val settings: Settings = new Settings()) extends Actor with Pe
   //By using a SortedMap as opposed to a Map we can also extract the latest id per sender
   private var previousResultsPerSender = Map.empty[ActorPath, SortedMap[Long, Option[Response]]]
 
-  def executeExpectAndMapToResponse[R](expect: => Expect[Either[ErrorCase, R]], deliveryId: Long)
+  def executeExpectAndMapToResponse[R](deliveryId: Long, expect: => Expect[Either[ErrorCase, R]])
                                       (implicit ex: ExecutionContext): Future[Response] = {
     Future {
       expect
@@ -62,7 +61,7 @@ class KadminActor(val settings: Settings = new Settings()) extends Actor with Pe
     val recipient = sender()
     val senderPath = sender().path
     val previousResults = previousResultsPerSender.getOrElse(senderPath, SortedMap.empty[Long, Option[Response]])
-    val expectedId = previousResults.lastOption.map(_._1 + 1).getOrElse(0L)
+    val expectedId = previousResults.keySet.lastOption.map(_ + 1).getOrElse(0L)
     log.info(s"""For sender ($senderPath):
                  |ExpectedId: $expectedId
                  |Received DeliveryId: $deliveryId""".stripMargin)
@@ -80,7 +79,7 @@ class KadminActor(val settings: Settings = new Settings()) extends Actor with Pe
       log.info("Going to perform deduplication")
       updateResult(senderPath, expectedId, None)
 
-      executeExpectAndMapToResponse(expect, deliveryId)
+      executeExpectAndMapToResponse(deliveryId, expect)
         .map(SideEffectResult(recipient, deliveryId, _))
         .pipeTo(self)
 

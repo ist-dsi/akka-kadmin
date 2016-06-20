@@ -20,10 +20,10 @@ class DeduplicationSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory
 
   val kadminActor = system.actorOf(Props(new KadminActor()))
 
-  var _seqCounter = 0L
+  private var seqCounter = 0L
   def nextSeq(): Long = {
-    val ret = _seqCounter
-    _seqCounter += 1
+    val ret = seqCounter
+    seqCounter += 1
     ret
   }
   implicit val timeout = Timeout(30.seconds)
