@@ -1,121 +1,130 @@
 package pt.tecnico.dsi.kadmin.akka
 
-import akka.actor.{Actor, ActorLogging, ActorPath, ActorRef}
+import akka.actor.{Actor, ActorLogging, ActorPath, ActorRef, Props}
 import akka.event.LoggingReceive
-import akka.pattern.pipe
-import akka.persistence.{PersistentActor, RecoveryCompleted, SnapshotOffer}
+import akka.persistence.{PersistentActor, SnapshotOffer}
 import com.typesafe.config.Config
-import pt.tecnico.dsi.kadmin.akka.KadminActor.{RemoveResult, SaveSnapshot, SideEffectResult}
 import pt.tecnico.dsi.kadmin.akka.Kadmin._
-import pt.tecnico.dsi.kadmin.{ErrorCase, Policy, Principal, UnknownError, Kadmin => KadminCore}
+import pt.tecnico.dsi.kadmin.akka.KadminActor._
+import pt.tecnico.dsi.kadmin.{ErrorCase, UnknownError, Kadmin => KadminCore}
 import work.martins.simon.expect.core.Expect
 
-import scala.concurrent.duration.Duration
 import scala.collection.immutable.SortedMap
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration.Duration
 import scala.util._
 
 object KadminActor {
   private case object SaveSnapshot
-  private case class SideEffectResult(senderPath: ActorRef, expectedId: Long, response: Response)
-  private case class RemoveResult(senderPath: ActorRef, removeId: Option[Long])
+  private[akka] case class Retry(sender: ActorRef, expectedId: Long)
+  private[akka] case class SideEffectOperation[R](sender: ActorRef, expectedId: Long, operation: Expect[Either[ErrorCase, R]])
+  private[akka] case class SideEffectResult(sender: ActorRef, expectedId: Long, response: Response)
+  private case class RemoveResult(sender: ActorRef, removeId: Option[Long])
 }
 class KadminActor(val settings: Settings = new Settings()) extends Actor with PersistentActor with ActorLogging {
   def this(config: Config) = this(new Settings(config))
 
   import settings._
-  //We will execute the kadmin expects in this context
-  import context.dispatcher
-
   val kadmin = new KadminCore(kadminSettings)
+  val blockingActor = context.actorOf(Props(classOf[BlockingActor], kadminSettings))
+  var counter = 0
 
   def persistenceId: String = "kadminActor"
 
   //By using a SortedMap as opposed to a Map we can also extract the latest id per sender
-  private var previousResultsPerSender = Map.empty[ActorPath, SortedMap[Long, Option[Response]]]
-
-  def executeExpectAndMapToResponse[R](deliveryId: Long, expect: => Expect[Either[ErrorCase, R]])
-                                      (implicit ex: ExecutionContext): Future[Response] = {
-    Future {
-      expect
-    } flatMap {
-      _.run()
-    } map {
-      case Right(principal: Principal) => PrincipalResponse(principal, deliveryId)
-      case Right(policy: Policy) => PolicyResponse(policy, deliveryId)
-      case Right(()) => Successful(deliveryId)
-      case Right(unexpectedType) =>
-        val ex = new IllegalArgumentException(s"Got Right with unexpected type: $unexpectedType")
-        //log.error(ex, ex.getMessage)
-        Failed(UnknownError(Some(ex)), deliveryId)
-      case Left(ec) => Failed(ec, deliveryId)
-    } recover {
-      //Most probably
-      // · The creation of the expect failed
-      // · Or the expect failed due to a TimeoutException and there isn't a when(timeout) declared
-      case t: Throwable => Failed(UnknownError(Some(t)), deliveryId)
-    }
-  }
+  private var resultsPerSender = Map.empty[ActorPath, SortedMap[Long, Option[Response]]]
 
   def performDeduplication[R](expect: Expect[Either[ErrorCase, R]], deliveryId: Long): Unit = {
     val recipient = sender()
     val senderPath = sender().path
-    val previousResults = previousResultsPerSender.getOrElse(senderPath, SortedMap.empty[Long, Option[Response]])
+    val previousResults = resultsPerSender.getOrElse(senderPath, SortedMap.empty[Long, Option[Response]])
     val expectedId = previousResults.keySet.lastOption.map(_ + 1).getOrElse(0L)
-    log.info(s"""For sender ($senderPath):
-                 |ExpectedId: $expectedId
-                 |Received DeliveryId: $deliveryId""".stripMargin)
 
+    def logIt(op: String, description: String): Unit = {
+      log.debug(s"""Sender: $senderPath
+                  |DeliveryId ($deliveryId) $op ExpectedId ($expectedId)
+                  |$description""".stripMargin)
+    }
     if (deliveryId > expectedId) {
-      //Ignore it we are not yet ready to deal with this message
-      log.info("DeliveryId > expectedID: ignoring message.")
+      logIt(">", "Ignoring message.")
     } else if (deliveryId < expectedId) {
-      //Send the stored response, if we have it.
-      //The response can already have been deleted by a Remove.
-      //Or a future might still be processing it.
-      log.debug("DeliveryId < expectedID: resending previously computed result (if there is any).")
-      previousResults.get(deliveryId).flatten.foreach(recipient ! _)
+      previousResults.get(deliveryId).flatten match {
+        case Some(result) =>
+          logIt("<", s"Resending previously computed result: $result.")
+          recipient ! result
+        case None =>
+          logIt("<", "There is no previously computed result. " +
+            s"Probably it is still being computed. Going to retry.")
+          //We schedule the retry by sending it to the blockingActor, which in turn will send it back to us.
+          //This strategy as a few advantages:
+          // · The retry will only be processed in the blockingActor after the previous expects are executed.
+          //   This is helpful since the result in which we are interested will likely be obtained by executing
+          //   one of the previous expects.
+          // · This actor will only receive the Retry after the SideEffectResults of the previous expects.
+          //   Or in other words, the Retry will only be processed after the results are persisted and updated in the
+          //   resultsPerSender, guaranteeing we have the result (if it was not explicitly removed).
+          blockingActor ! Retry(recipient, deliveryId)
+      }
     } else { //deliveryId == expectedId
-      log.info("Going to perform deduplication")
-      updateResult(senderPath, expectedId, None)
+      logIt("==", "Going to perform deduplication.")
 
-      executeExpectAndMapToResponse(deliveryId, expect)
-        .map(SideEffectResult(recipient, deliveryId, _))
-        .pipeTo(self)
+      //By setting the result to None we ensure a bigger throughput since we allow this actor to continue
+      //processing requests. Aka the expected id will be increased and we will be able to respond to messages
+      //where DeliveryId < expectedID.
+      updateResult(senderPath, deliveryId, None)
 
-      // If this actor crashes between the previous expect execution and the persist of the side-effect result
+      Try {
+        //The expect creation might fail if the arguments to the operation are invalid.
+        expect
+      } match {
+        case Success(e) =>
+          blockingActor ! SideEffectOperation(recipient, deliveryId, e)
+        case Failure(t) =>
+          self ! SideEffectResult(recipient, deliveryId, Failed(UnknownError(Some(t)), deliveryId))
+      }
+      // If this actor or the blockingActor crashes:
+      //  · After executing the expect
+      //  · But before persisting the SideEffectResult
       // then the side-effect will be performed twice.
-      // In this case we are not guaranteeing de-duplication, but we are reducing the
-      // possible window for duplication to a much smaller value, thus implementing best-effort deduplication.
+      //
+      // However since almost every operation in kadmin is idempotent we get effectively exactly-once processing.
+      // The only exception to this is ChangePassword and AddPrincipal (since it might call ChangePassword).
+      // When these operations are not idempotent we cannot perform deduplication.
 
-      // The persist and sending back the response occurs when this actor receives the piped result.
+      // The persist and sending back the response occurs when this actor receives the SideEffectResult from the blockingActor.
     }
   }
 
   def removeResult(senderPath: ActorPath, removeId: Option[Long]): Unit = {
-    previousResultsPerSender.get(senderPath) match {
+    resultsPerSender.get(senderPath) match {
       case None => //We dont have any entry for senderPath. All good, we don't need to do anything.
       case Some(previousResults) =>
         removeId match {
-          case None => previousResultsPerSender -= senderPath
-          case Some(id) => previousResultsPerSender += senderPath -> (previousResults - id)
+          case None => resultsPerSender -= senderPath
+          case Some(id) => resultsPerSender += senderPath -> (previousResults - id)
         }
     }
   }
   def updateResult(senderPath: ActorPath, expectedId: Long, response: Option[Response]): Unit = {
-    val previousResults = previousResultsPerSender.getOrElse(senderPath, SortedMap.empty[Long, Option[Response]])
-    previousResultsPerSender += senderPath -> previousResults.updated(expectedId, response)
+    val previousResults = resultsPerSender.getOrElse(senderPath, SortedMap.empty[Long, Option[Response]])
+    resultsPerSender += senderPath -> previousResults.updated(expectedId, response)
+
+    if (saveSnapshotEveryXMessages > 0) {
+      counter += 1
+      if (counter == saveSnapshotEveryXMessages) {
+        self ! SaveSnapshot
+      }
+    }
   }
 
   def receiveCommand: Receive = LoggingReceive {
     case RemoveDeduplicationResult(removeId, deliveryId) =>
       persist(RemoveResult(sender(), removeId)) { remove =>
-        if (settings.removeDelay == Duration.Zero) {
+        if (removeDelay == Duration.Zero) {
           removeResult(sender.path, removeId)
         } else {
-          context.system.scheduler.scheduleOnce(settings.removeDelay) {
+          context.system.scheduler.scheduleOnce(removeDelay) {
             self ! remove
-          }
+          }(context.dispatcher)
         }
         sender() ! Successful(deliveryId)
       }
@@ -127,6 +136,18 @@ class KadminActor(val settings: Settings = new Settings()) extends Actor with Pe
         updateResult(sender.path, expectedId, Some(response))
         sender ! response
       }
+
+    case Retry(sender, deliveryId) =>
+      val senderPath = sender.path
+      resultsPerSender.get(senderPath).flatMap(_.get(deliveryId).flatten) match {
+        case Some(result) =>
+          log.debug(s"Retry for ($senderPath, $deliveryId): sending result: $result.")
+          sender ! result
+        case None =>
+          log.debug(s"Retry for ($senderPath, $deliveryId): still no result. Most probably it was removed explicitly.")
+      }
+
+    case SaveSnapshot => saveSnapshot(resultsPerSender)
 
     //=================================================================================
     //==== Principal actions ==========================================================
@@ -171,26 +192,15 @@ class KadminActor(val settings: Settings = new Settings()) extends Actor with Pe
       performDeduplication(kadmin.deletePolicy(policy), deliveryId)
     case GetPolicy(policy, deliveryId) =>
       performDeduplication(kadmin.getPolicy(policy), deliveryId)
-
-    case SaveSnapshot => saveSnapshot(previousResultsPerSender)
   }
 
   def receiveRecover: Receive = LoggingReceive {
     case SnapshotOffer(metadata, offeredSnapshot) =>
-      previousResultsPerSender = offeredSnapshot.asInstanceOf[Map[ActorPath, SortedMap[Long, Option[Response]]]]
+      resultsPerSender = offeredSnapshot.asInstanceOf[Map[ActorPath, SortedMap[Long, Option[Response]]]]
 
     case SideEffectResult(sender, expectedId, response) =>
       updateResult(sender.path, expectedId, Some(response))
     case RemoveResult(sender, removeId) =>
       removeResult(sender.path, removeId)
-
-    case RecoveryCompleted =>
-      import context.dispatcher
-      if (saveSnapshotInterval != Duration.Zero) {
-        context.system.scheduler.schedule(saveSnapshotInterval, saveSnapshotInterval) {
-          self ! SaveSnapshot
-        }
-      }
-    //TODO: implement snapshots
   }
 }

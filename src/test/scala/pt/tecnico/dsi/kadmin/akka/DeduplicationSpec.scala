@@ -1,40 +1,15 @@
 package pt.tecnico.dsi.kadmin.akka
 
-import akka.actor.{ActorSystem, Props}
-import akka.testkit.{ImplicitSender, TestKit}
-import akka.util.Timeout
-import com.typesafe.config.ConfigFactory
-import com.typesafe.scalalogging.LazyLogging
-import org.scalatest.{BeforeAndAfterAll, FlatSpecLike, Matchers}
 import pt.tecnico.dsi.kadmin.akka.Kadmin._
 
-import scala.concurrent.duration.DurationInt
-import scala.language.postfixOps
-
-class DeduplicationSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory.load()))
-  with FlatSpecLike
-  with Matchers
-  with BeforeAndAfterAll
-  with ImplicitSender
-  with LazyLogging {
-
-  val kadminActor = system.actorOf(Props(new KadminActor()))
-
-  private var seqCounter = 0L
-  def nextSeq(): Long = {
-    val ret = seqCounter
-    seqCounter += 1
-    ret
-  }
-  implicit val timeout = Timeout(30.seconds)
+class DeduplicationSpec extends ActorSysSpec {
+  val policyName = "deduplication"
+  val principalName = "withDeduplicationPrincipal"
   "The side-effect" should "be executed only once" in {
-    logger.info(s"TestActorPath: ${testActor.path}")
-    val policyName = "deduplication"
     val addPolicyId = nextSeq()
     kadminActor ! AddPolicy("-history 1", policyName, addPolicyId)
     expectMsg(Successful(addPolicyId))
 
-    val principalName = "withDeduplicationPrincipal"
     val addPrincipalId = nextSeq()
     kadminActor ! AddPrincipal(s"-policy $policyName", principalName, randKey = true, deliveryId = addPrincipalId)
     expectMsg(Successful(addPrincipalId))
@@ -46,5 +21,28 @@ class DeduplicationSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory
 
     kadminActor ! changePasswordMessage
     expectMsg(Successful(changePaswordId))
+  }
+
+  "Rapid message sending" should "be executed only once" in {
+    val addPolicyId = nextSeq()
+    kadminActor ! AddPolicy("-history 1", policyName, addPolicyId)
+    val addPrincipalId = nextSeq()
+    kadminActor ! AddPrincipal(s"-policy $policyName", principalName, randKey = true, deliveryId = addPrincipalId)
+    val changePaswordId = nextSeq()
+    val changePasswordMessage = ChangePrincipalPassword(principalName, newPassword = Some("a new password 123"), deliveryId = changePaswordId)
+    kadminActor ! changePasswordMessage
+    kadminActor ! changePasswordMessage
+
+    expectMsg(Successful(addPolicyId))
+    expectMsg(Successful(addPrincipalId))
+    expectMsg(Successful(changePaswordId))
+    expectMsg(Successful(changePaswordId)) //This only works because we are retrying.
+  }
+
+  "A future message" should "be ignored" in {
+    nextSeq() //Skip one message
+    val id = nextSeq()
+    kadminActor ! GetPrincipal(principalName, id)
+    expectNoMsg()
   }
 }

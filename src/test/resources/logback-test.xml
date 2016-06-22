@@ -16,8 +16,9 @@
     </appender>
 
     <logger name="org.scalatest"                level="DEBUG" />
-    <logger name="work.martins.simon.expect"    level="INFO" />
+    <logger name="work.martins.simon.expect"    level="WARN" />
     <logger name="akka.persistence"             level="DEBUG"/>
+    <logger name="akka.persistence.journal.leveldb" level="DEBUG" />
     <logger name="org.iq80.leveldb"             level="DEBUG"/>
 
     <root level="DEBUG">
