@@ -1,14 +1,16 @@
 package pt.tecnico.dsi.kadmin.akka
 
+import java.io.File
+
 import akka.actor.{ActorSystem, Props}
 import akka.testkit.{ImplicitSender, TestKit}
 import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.LazyLogging
+import org.apache.commons.io.FileUtils
 import org.scalatest.{BeforeAndAfterAll, FlatSpecLike, Matchers}
 
-import scala.concurrent.Await
-import scala.concurrent.duration.{Duration, DurationInt}
+import scala.concurrent.duration.DurationInt
 
 abstract class ActorSysSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory.load()))
   with Matchers
@@ -27,10 +29,20 @@ abstract class ActorSysSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFac
     ret
   }
 
+  val storageLocations = List(
+    "akka.persistence.journal.leveldb.dir",
+    "akka.persistence.journal.leveldb-shared.store.dir",
+    "akka.persistence.snapshot-store.local.dir"
+  ).map(s ⇒ new File(system.settings.config.getString(s)))
+
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    storageLocations.foreach(FileUtils.deleteDirectory)
+  }
+
   override protected def afterAll(): Unit = {
     super.afterAll()
-    system.stop(kadminActor)
-    //It seems the only way for levelDB to release the lock is by terminating the system.
-    Await.result(system.terminate(), Duration.Inf)
+    storageLocations.foreach(FileUtils.deleteDirectory)
+    shutdown(verifySystemShutdown = true)
   }
 }

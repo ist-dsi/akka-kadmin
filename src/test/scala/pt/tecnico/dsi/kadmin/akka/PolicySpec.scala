@@ -26,4 +26,11 @@ class PolicySpec extends ActorSysSpec {
     policy.policy.minimumLength shouldBe minimumLength
     policy.policy.minimumCharacterClasses shouldBe minimumClasses
   }
+
+  "an invalid operation" should "return failed" in {
+    val id = nextSeq()
+    kadminActor ! ChangePrincipalPassword("somePrincipal", deliveryId = id)
+    val failed = expectMsgClass(classOf[Failed])
+    failed.deliveryId shouldBe id
+  }
 }

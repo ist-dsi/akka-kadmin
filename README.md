@@ -10,6 +10,39 @@
 
 [Latest scaladoc documentation](http://ist-dsi.github.io/akka-kadmin/latest/api/)
 
+The kadmin actor will perform a best effort deduplication. To do so the code **assumes** there is only **one**
+kadmin actor interacting with kerberos.
+
+By best effort we mean that there is still a very small window in which duplication can still occur.
+To understand it, we must first explain how the code operates:
+The kadmin actor knows the last deliveryId it handled for a given sender.
+When a new message arrives it will check its deliveryId against the expectedId (last deliveryId + 1) of that sender.
+ - If (deliveryId > expectedId) then
+
+   The message is a future one and there are unprocessed messages in between, so the actor will ignore it.
+ - If (deliveryId < expectedId) then
+
+   The message is a resend, the actor will just respond with its result.
+   This result was stored in the actor internal state when the message side-effect was performed.
+ - If (deliveryId == expectedId) then
+
+   This is the message we are expecting, so the side-effect will performed the following way:
+    1. Store **in memory** that we started performing the side-effect.
+    2. Perform the side-effect.
+    3. Persist the side-effect result, and then in the persist handler, update
+       the actor internal state with the result.
+
+If the actor crashes:
+ - After performing the side-effect
+ - But before persisting its result
+
+Duplication will occur because when recovering the actor won't know that it already performed the side-effect.
+This is also true if we persisted that we started executing the side-effect.
+
+For most operations this won't be a problem because they are idempotent. However for ChangePassword and
+consequently AddPrincipal (since ChangePassword might be invoked inside AddPrincipal) this might be a problem
+because these operations might not be idempotent in some cases.
+
 ## Install
 Add the following dependency to your `build.sbt`:
 ```sbt
@@ -17,9 +50,34 @@ libraryDependencies += "pt.tecnico.dsi" %% "akka-kadmin" % "0.3.0"
 ```
 We use [semantic versioning](http://semver.org).
 
-
 ## Configurations
+akka-kadmin uses [typesafe-config](https://github.com/typesafehub/config).
 
+The [reference.conf](src/main/resources/reference.conf) file has the following keys:
+```scala
+akka-kadmin {
+  # How long to wait to actually perform the remove.
+  # It is useful to perform the remove at a later time to deal with delayed messages.
+  # If set to 0 then the remove will be performed instantaneously
+  remove-delay = 15 minutes
+
+  # Every X messages a snapshot will be saved. Set to 0 to disable automatic saving of snapshots.
+  # This value is not a strict one because the kadmin actor will not persist it.
+  # If 190 messages were already processed and then the actor crashs only after
+  # another 200 messages will the actor save a snapshot.
+  # Repeated and future messages will not count. Or, in other words, only messages where the deliveryId
+  # is equal to the expectedId will increase the counter.
+  save-snapshot-every-X-messages = 200
+
+  # Akka-kadmin will use as settings for kadmin library those defined:
+  # 1) Here, directly under the path akka-kadmin (these have precedence over the next ones).
+  # 2) On the same level as akka-kadmin.
+}
+```
+
+Alternatively you can pass your Config object to the Kadmin actor directly, or subclass the
+[Settings](https://ist-dsi.github.io/akka-kadmin/latest/api/#pt.tecnico.dsi.kadmin.akka.Settings) class for a mixed approach.
+The scaladoc of the Settings class has examples explaining the different options.
 
 ## How to test akka-kadmin
 In the project root run `./test.sh`. This script will run `docker-compose up` inside the docker-kerberos folder.

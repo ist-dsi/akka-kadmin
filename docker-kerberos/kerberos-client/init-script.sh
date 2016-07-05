@@ -4,6 +4,7 @@ source `dirname $0`/configureKerberosClient.sh
 
 cd /tmp/akka-kadmin
 
+#sbt <<<"testOnly *DeduplicationSpec"
 #sbt <<<"testOnly *PolicySpec"
 sbt clean coverage test
 sbt -Dfile.encoding=UTF8 coverageReport codacyCoverage

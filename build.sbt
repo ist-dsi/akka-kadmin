@@ -40,8 +40,9 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.1.7" % "test",
   //Testing
   "org.scalatest" %% "scalatest" % "2.2.6" % "test",
-  "org.scalacheck" %% "scalacheck" % "1.12.5" % "test",
-  "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test"
+  "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test",
+
+  "commons-io" % "commons-io" % "2.5" % Test
 )
 resolvers += Opts.resolver.sonatypeReleases
 
