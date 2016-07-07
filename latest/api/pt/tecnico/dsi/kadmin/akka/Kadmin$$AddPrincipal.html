@@ -45,7 +45,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">AddPrincipal</span><span class="params">(<span name="options">options: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="principal">principal: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="deliveryId">deliveryId: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result"> extends <a href="Kadmin$$Request.html" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.Request">Request</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+        <span class="name">AddPrincipal</span><span class="params">(<span name="options">options: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="principal">principal: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="newPassword">newPassword: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="randKey">randKey: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a> = <span class="symbol">false</span></span>, <span name="keysalt">keysalt: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="deliveryId">deliveryId: <a href="Kadmin$.html#DeliveryId=Long" class="extmbr" name="pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId">DeliveryId</a></span>)</span><span class="result"> extends <a href="Kadmin$$Request.html" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.Request">Request</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4>
       
@@ -97,7 +97,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="pt.tecnico.dsi.kadmin.akka.Kadmin.AddPrincipal#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(options:String,principal:String,deliveryId:Long):pt.tecnico.dsi.kadmin.akka.Kadmin.AddPrincipal"></a>
+      <a id="&lt;init&gt;(options:String,principal:String,newPassword:Option[String],randKey:Boolean,keysalt:Option[String],deliveryId:pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId):pt.tecnico.dsi.kadmin.akka.Kadmin.AddPrincipal"></a>
       <a id="&lt;init&gt;:AddPrincipal"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -105,10 +105,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">AddPrincipal</span><span class="params">(<span name="options">options: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="principal">principal: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="deliveryId">deliveryId: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span>
+        <span class="name">AddPrincipal</span><span class="params">(<span name="options">options: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="principal">principal: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="newPassword">newPassword: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="randKey">randKey: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a> = <span class="symbol">false</span></span>, <span name="keysalt">keysalt: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>, <span name="deliveryId">deliveryId: <a href="Kadmin$.html#DeliveryId=Long" class="extmbr" name="pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId">DeliveryId</a></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$AddPrincipal@&lt;init&gt;(options:String,principal:String,deliveryId:Long):pt.tecnico.dsi.kadmin.akka.Kadmin.AddPrincipal" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$AddPrincipal@&lt;init&gt;(options:String,principal:String,newPassword:Option[String],randKey:Boolean,keysalt:Option[String],deliveryId:pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId):pt.tecnico.dsi.kadmin.akka.Kadmin.AddPrincipal" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -259,18 +259,18 @@
               
         </dd></dl></div>
     </li><li name="pt.tecnico.dsi.kadmin.akka.Kadmin.AddPrincipal#deliveryId" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="deliveryId:Long"></a>
-      <a id="deliveryId:Long"></a>
+      <a id="deliveryId:pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId"></a>
+      <a id="deliveryId:DeliveryId"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">deliveryId</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Long" class="extype" target="_top">Long</a></span>
+        <span class="name">deliveryId</span><span class="result">: <a href="Kadmin$.html#DeliveryId=Long" class="extmbr" name="pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId">DeliveryId</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$AddPrincipal@deliveryId:Long" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$AddPrincipal@deliveryId:pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -457,6 +457,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="pt.tecnico.dsi.kadmin.akka.Kadmin.AddPrincipal#keysalt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="keysalt:Option[String]"></a>
+      <a id="keysalt:Option[String]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">keysalt</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$AddPrincipal@keysalt:Option[String]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -474,6 +491,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="pt.tecnico.dsi.kadmin.akka.Kadmin.AddPrincipal#newPassword" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="newPassword:Option[String]"></a>
+      <a id="newPassword:Option[String]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newPassword</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$AddPrincipal@newPassword:Option[String]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <a id="notify():Unit"></a>
@@ -538,6 +572,23 @@
       </span>
       </h4><span class="permalink">
       <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$AddPrincipal@principal:String" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="pt.tecnico.dsi.kadmin.akka.Kadmin.AddPrincipal#randKey" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="randKey:Boolean"></a>
+      <a id="randKey:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">randKey</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$AddPrincipal@randKey:Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>PolicyResponse - pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse</title>
-          <meta name="description" content="PolicyResponse - pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse" />
-          <meta name="keywords" content="PolicyResponse pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse" />
+          <title>Settings - pt.tecnico.dsi.kadmin.akka.Settings</title>
+          <meta name="description" content="Settings - pt.tecnico.dsi.kadmin.akka.Settings" />
+          <meta name="keywords" content="Settings pt.tecnico.dsi.kadmin.akka.Settings" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../../index.html';
-            var hash = 'pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse';
+            var hash = 'pt.tecnico.dsi.kadmin.akka.Settings';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -29,11 +29,11 @@
         <body class="type">
       <div id="definition">
         <img alt="Class" src="../../../../../lib/class_big.png" />
-        <p id="owner"><a href="../../../../package.html" class="extype" name="pt">pt</a>.<a href="../../../package.html" class="extype" name="pt.tecnico">tecnico</a>.<a href="../../package.html" class="extype" name="pt.tecnico.dsi">dsi</a>.<a href="../package.html" class="extype" name="pt.tecnico.dsi.kadmin">kadmin</a>.<a href="package.html" class="extype" name="pt.tecnico.dsi.kadmin.akka">akka</a>.<a href="Kadmin$.html" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin">Kadmin</a></p>
-        <h1>PolicyResponse</h1><h3><span class="morelinks"><div>Related Doc:
-            <a href="Kadmin$.html" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin">package Kadmin</a>
+        <p id="owner"><a href="../../../../package.html" class="extype" name="pt">pt</a>.<a href="../../../package.html" class="extype" name="pt.tecnico">tecnico</a>.<a href="../../package.html" class="extype" name="pt.tecnico.dsi">dsi</a>.<a href="../package.html" class="extype" name="pt.tecnico.dsi.kadmin">kadmin</a>.<a href="package.html" class="extype" name="pt.tecnico.dsi.kadmin.akka">akka</a></p>
+        <h1>Settings</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="pt.tecnico.dsi.kadmin.akka">package akka</a>
           </div></span></h3><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -42,19 +42,22 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">PolicyResponse</span><span class="params">(<span name="policy">policy: <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/pt/tecnico/dsi/kadmin_2.11/5.3.1/kadmin_2.11-5.3.1-javadoc.jar/!/index.html#pt.tecnico.dsi.kadmin.Policy" class="extype" target="_top">Policy</a></span>, <span name="deliveryId">deliveryId: <a href="Kadmin$.html#DeliveryId=Long" class="extmbr" name="pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId">DeliveryId</a></span>)</span><span class="result"> extends <a href="Kadmin$$SuccessResponse.html" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.SuccessResponse">SuccessResponse</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+        <span class="name">Settings</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>This class holds all the settings that parameterize akka-kadmin.</p><p>By default these settings are read from the Config obtained with <code>ConfigFactory.load()</code>.</p><p>You can change the settings in multiple ways:</p><ul><li>Change them in the default configuration file (e.g. application.conf)</li><li>Pass a different config holding your configurations: </li></ul><pre><span class="kw">new</span> Settings(yourConfig)</pre><p>    However it will be more succinct to pass your config directly to KadminActor: </p><pre>context.actorOf(Props(classOf[KadminActor], yourConfig))</pre><ul><li>Extend this class overriding the settings you want to redefine </li></ul><pre><span class="kw">object</span> YourSettings <span class="kw">extends</span> Settings() {
+  <span class="kw">override</span> <span class="kw">val</span> performDeduplication: <span class="std">Boolean</span> = <span class="kw">true</span>
+}
+context.actorOf(Props(classOf[KadminActor], YourSettings))</pre></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a>, <span class="extype" name="java.io.Serializable">Serializable</span>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Equals" class="extype" target="_top">Equals</a>, <a href="Kadmin$$SuccessResponse.html" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.SuccessResponse">SuccessResponse</a>, <a href="Kadmin$$Response.html" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.Response">Response</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
                 <span class="toggle diagram-link">Type Hierarchy</span>
-                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 343.50 118.00" height="118pt" width="344pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="graph0"><polygon points="-4,4 -4,-114 339.5,-114 339.5,4 -4,4" stroke="none" fill="white"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse (this class)" xlink:href="#inheritance-diagram"><polygon points="240.5,-49 125.5,-49 125.5,-24 240.5,-24 240.5,-49" stroke="#115f3b" fill="#0a955b"></polygon><image xlink:href="../../../../../lib/class_diagram.png" y="-43.5" x="136" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="10.00" font-family="Arial" y="-33.5" x="157" text-anchor="start">PolicyResponse</text></a></g></g><!-- node1 --><g class="node trait" id="graph1_1"><g id="a_trait|graph1_1"><a xlink:title="pt.tecnico.dsi.kadmin.akka.Kadmin.SuccessResponse" xlink:href="Kadmin$$SuccessResponse.html#inheritance-diagram"><polygon points="126,-110 0,-110 0,-85 126,-85 126,-110" stroke="#37657d" fill="#498aad"></polygon><image xlink:href="../../../../../lib/trait_diagram.png" y="-104.5" x="10" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="10.00" font-family="Arial" y="-94.5" x="31" text-anchor="start">SuccessResponse</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="PolicyResponse is a subtype of SuccessResponse"><path d="M90.9902,-82.7381C111.697,-72.5571 139.597,-58.8399 159.227,-49.1884" stroke="#d4d4d4" fill="none"></path><polygon points="90.1369,-81.2075 86.4221,-84.9841 91.6812,-84.3484 90.1369,-81.2075" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node2 --><g class="node trait" id="graph1_2"><g id="a_trait|graph1_2"><a xlink:title="scala.Product"><polygon points="222,-110 144,-110 144,-85 222,-85 222,-110" stroke="#37657d" fill="#498aad"></polygon><image xlink:href="../../../../../lib/trait_diagram.png" y="-104.5" x="154" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="10.00" font-family="Arial" y="-94.5" x="175" text-anchor="start">Product</text></a></g></g><!-- node2&#45;&gt;node0 --><g class="edge inheritance" id="graph1_2_0"><g id="a_inheritance|graph1_2_0"><a xlink:title="PolicyResponse is a subtype of Product"><path d="M183,-79.6874C183,-69.9173 183,-57.8534 183,-49.1323" stroke="#d4d4d4" fill="none"></path><polygon points="181.25,-79.8435 183,-84.8435 184.75,-79.8435 181.25,-79.8435" stroke="#d4d4d4" fill="none"></polygon></a></g></g><!-- node3 --><g class="node trait" id="graph1_3"><g id="a_trait|graph1_3"><a xlink:title="scala.Serializable"><polygon points="335.5,-110 240.5,-110 240.5,-85 335.5,-85 335.5,-110" stroke="#37657d" fill="#498aad"></polygon><image xlink:href="../../../../../lib/trait_diagram.png" y="-104.5" x="251" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="10.00" font-family="Arial" y="-94.5" x="272" text-anchor="start">Serializable</text></a></g></g><!-- node3&#45;&gt;node0 --><g class="edge inheritance" id="graph1_3_0"><g id="a_inheritance|graph1_3_0"><a xlink:title="PolicyResponse is a subtype of Serializable"><path d="M263.05,-82.4807C244.98,-72.3269 220.834,-58.7588 203.801,-49.1884" stroke="#d4d4d4" fill="none"></path><polygon points="262.289,-84.0604 267.506,-84.9841 264.004,-81.0091 262.289,-84.0604" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="0.00 0.00 138.00 118.00" height="118pt" width="138pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g transform="scale(1 1) rotate(0) translate(4 114)" class="graph" id="graph0"><polygon points="-4,4 -4,-114 134,-114 134,4 -4,4" stroke="none" fill="white"></polygon><g class="cluster" id="clust1"></g><g class="cluster" id="clust2"></g><!-- node0 --><g class="node this class" id="graph1_0"><g id="a_this class|graph1_0"><a xlink:title="pt.tecnico.dsi.kadmin.akka.Settings (this class)" xlink:href="#inheritance-diagram"><polygon points="105.5,-49 24.5,-49 24.5,-24 105.5,-24 105.5,-49" stroke="#115f3b" fill="#0a955b"></polygon><image xlink:href="../../../../../lib/class_diagram.png" y="-43.5" x="35" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="10.00" font-family="Arial" y="-33.5" x="56" text-anchor="start">Settings</text></a></g></g><!-- node1 --><g class="node class" id="graph1_1"><g id="a_class|graph1_1"><a xlink:title="scala.AnyRef"><polygon points="103,-110 27,-110 27,-85 103,-85 103,-110" stroke="#115f3b" fill="#0a955b"></polygon><image xlink:href="../../../../../lib/class_diagram.png" y="-104.5" x="37" preserveAspectRatio="xMinYMin meet" height="15px" width="15px"></image><text fill="#ffffff" font-size="10.00" font-family="Arial" y="-94.5" x="58" text-anchor="start">AnyRef</text></a></g></g><!-- node1&#45;&gt;node0 --><g class="edge inheritance" id="graph1_1_0"><g id="a_inheritance|graph1_1_0"><a xlink:title="Settings is a subtype of AnyRef"><path d="M65,-79.6874C65,-69.9173 65,-57.8534 65,-49.1323" stroke="#d4d4d4" fill="none"></path><polygon points="63.2501,-79.8435 65,-84.8435 66.7501,-79.8435 63.2501,-79.8435" stroke="#d4d4d4" fill="none"></polygon></a></g></g></g></svg></div>
               </div></div>
         
 
@@ -72,7 +75,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse"><span>PolicyResponse</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="pt.tecnico.dsi.kadmin.akka.Kadmin.SuccessResponse"><span>SuccessResponse</span></li><li class="in" name="pt.tecnico.dsi.kadmin.akka.Kadmin.Response"><span>Response</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="pt.tecnico.dsi.kadmin.akka.Settings"><span>Settings</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
                 <span class="filtertype">Implicitly<br />
@@ -96,19 +99,19 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(policy:pt.tecnico.dsi.kadmin.Policy,deliveryId:pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId):pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse"></a>
-      <a id="&lt;init&gt;:PolicyResponse"></a>
+              <ol><li name="pt.tecnico.dsi.kadmin.akka.Settings#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(config:com.typesafe.config.Config):pt.tecnico.dsi.kadmin.akka.Settings"></a>
+      <a id="&lt;init&gt;:Settings"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">PolicyResponse</span><span class="params">(<span name="policy">policy: <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/pt/tecnico/dsi/kadmin_2.11/5.3.1/kadmin_2.11-5.3.1-javadoc.jar/!/index.html#pt.tecnico.dsi.kadmin.Policy" class="extype" target="_top">Policy</a></span>, <span name="deliveryId">deliveryId: <a href="Kadmin$.html#DeliveryId=Long" class="extmbr" name="pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId">DeliveryId</a></span>)</span>
+        <span class="name">Settings</span><span class="params">(<span name="config">config: <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/com/typesafe/config/1.3.0/config-1.3.0-javadoc.jar/!/index.html#com.typesafe.config.Config" class="extype" target="_top">Config</a> = <span class="symbol">ConfigFactory.load()</span></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@&lt;init&gt;(policy:pt.tecnico.dsi.kadmin.Policy,deliveryId:pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId):pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@&lt;init&gt;(config:com.typesafe.config.Config):pt.tecnico.dsi.kadmin.akka.Settings" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -134,7 +137,7 @@
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -151,7 +154,7 @@
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@##():Int" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@##():Int" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -168,34 +171,34 @@
         <span title="gt4s: $plus" class="implicit">+</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@+(other:String):String" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@+(other:String):String" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit information</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to
-            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>] performed by method any2stringadd in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to
+            <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>] performed by method any2stringadd in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>any2stringadd</dd></dl></div>
     </li><li name="scala.Predef.ArrowAssoc#-&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="-&gt;[B](y:B):(A,B)"></a>
-      <a id="-&gt;[B](B):(PolicyResponse,B)"></a>
+      <a id="-&gt;[B](B):(Settings,B)"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>, <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
+        <span title="gt4s: $minus$greater" class="implicit">-&gt;</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>, <span class="extype" name="scala.Predef.ArrowAssoc.-&gt;.B">B</span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@-&gt;[B](y:B):(A,B)" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@-&gt;[B](y:B):(A,B)" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit information</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to
-            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>] performed by method ArrowAssoc in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>] performed by method ArrowAssoc in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd><dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
@@ -213,11 +216,28 @@
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="pt.tecnico.dsi.kadmin.akka.Settings#akkaKadminConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="akkaKadminConfig:com.typesafe.config.Config"></a>
+      <a id="akkaKadminConfig:Config"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">akkaKadminConfig</span><span class="result">: <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/com/typesafe/config/1.3.0/config-1.3.0-javadoc.jar/!/index.html#com.typesafe.config.Config" class="extype" target="_top">Config</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@akkaKadminConfig:com.typesafe.config.Config" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -230,7 +250,7 @@
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -247,7 +267,7 @@
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@clone():Object" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@clone():Object" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -258,105 +278,88 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse#deliveryId" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="deliveryId:pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId"></a>
-      <a id="deliveryId:DeliveryId"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">deliveryId</span><span class="result">: <a href="Kadmin$.html#DeliveryId=Long" class="extmbr" name="pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId">DeliveryId</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@deliveryId:pt.tecnico.dsi.kadmin.akka.Kadmin.DeliveryId" title="Permalink" target="_top">
-        <img src="../../../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> → <a href="Kadmin$$Response.html" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.Response">Response</a></dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A"></a>
-      <a id="ensuring((PolicyResponse)⇒Boolean,⇒Any):PolicyResponse"></a>
+      <a id="ensuring((Settings)⇒Boolean,⇒Any):Settings"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a></span>
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@ensuring(cond:A=&gt;Boolean,msg:=&gt;Any):A" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit information</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to
-            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>] performed by method Ensuring in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>] performed by method Ensuring in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ensuring(cond:A=&gt;Boolean):A"></a>
-      <a id="ensuring((PolicyResponse)⇒Boolean):PolicyResponse"></a>
+      <a id="ensuring((Settings)⇒Boolean):Settings"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a></span>
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: (<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@ensuring(cond:A=&gt;Boolean):A" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@ensuring(cond:A=&gt;Boolean):A" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit information</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to
-            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>] performed by method Ensuring in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>] performed by method Ensuring in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ensuring(cond:Boolean,msg:=&gt;Any):A"></a>
-      <a id="ensuring(Boolean,⇒Any):PolicyResponse"></a>
+      <a id="ensuring(Boolean,⇒Any):Settings"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a></span>
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="msg">msg: ⇒ <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@ensuring(cond:Boolean,msg:=&gt;Any):A" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit information</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to
-            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>] performed by method Ensuring in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>] performed by method Ensuring in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.Predef.Ensuring#ensuring" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ensuring(cond:Boolean):A"></a>
-      <a id="ensuring(Boolean):PolicyResponse"></a>
+      <a id="ensuring(Boolean):Settings"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a></span>
+        <span class="implicit">ensuring</span><span class="params">(<span name="cond">cond: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@ensuring(cond:Boolean):A" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@ensuring(cond:Boolean):A" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit information</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to
-            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>] performed by method Ensuring in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to
+            <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>] performed by method Ensuring in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>Ensuring</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -371,11 +374,28 @@
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -388,7 +408,7 @@
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@finalize():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@finalize():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -411,13 +431,13 @@
         <span class="implicit">formatted</span><span class="params">(<span name="fmtstr">fmtstr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@formatted(fmtstr:String):String" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@formatted(fmtstr:String):String" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit information</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to
-            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>] performed by method StringFormat in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to
+            <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>] performed by method StringFormat in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>StringFormat</dd><dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
@@ -435,7 +455,24 @@
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@getClass():Class[_]" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@hashCode():Int" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -452,11 +489,28 @@
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="pt.tecnico.dsi.kadmin.akka.Settings#kadminSettings" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="kadminSettings:pt.tecnico.dsi.kadmin.Settings"></a>
+      <a id="kadminSettings:kadmin.Settings"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">kadminSettings</span><span class="result">: <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/pt/tecnico/dsi/kadmin_2.11/5.3.1/kadmin_2.11-5.3.1-javadoc.jar/!/index.html#pt.tecnico.dsi.kadmin.Settings" class="extype" target="_top">kadmin.Settings</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@kadminSettings:pt.tecnico.dsi.kadmin.Settings" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -469,7 +523,7 @@
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -486,7 +540,7 @@
         <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@notify():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@notify():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -503,24 +557,41 @@
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse#policy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="policy:pt.tecnico.dsi.kadmin.Policy"></a>
-      <a id="policy:Policy"></a>
+    </li><li name="pt.tecnico.dsi.kadmin.akka.Settings#removeDelay" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="removeDelay:scala.concurrent.duration.FiniteDuration"></a>
+      <a id="removeDelay:FiniteDuration"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">policy</span><span class="result">: <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/pt/tecnico/dsi/kadmin_2.11/5.3.1/kadmin_2.11-5.3.1-javadoc.jar/!/index.html#pt.tecnico.dsi.kadmin.Policy" class="extype" target="_top">Policy</a></span>
+        <span class="name">removeDelay</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.concurrent.duration.FiniteDuration" class="extype" target="_top">FiniteDuration</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@policy:pt.tecnico.dsi.kadmin.Policy" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@removeDelay:scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="pt.tecnico.dsi.kadmin.akka.Settings#saveSnapshotRoughlyEveryXMessages" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="saveSnapshotRoughlyEveryXMessages:Int"></a>
+      <a id="saveSnapshotRoughlyEveryXMessages:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">saveSnapshotRoughlyEveryXMessages</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@saveSnapshotRoughlyEveryXMessages:Int" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -537,11 +608,28 @@
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="pt.tecnico.dsi.kadmin.akka.Settings#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@toString():String" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -554,7 +642,7 @@
         <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@wait():Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@wait():Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -577,7 +665,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Long" class="extype" target="_top">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -600,7 +688,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -613,23 +701,23 @@
         </dd></dl></div>
     </li><li name="scala.Predef.ArrowAssoc#→" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="→[B](y:B):(A,B)"></a>
-      <a id="→[B](B):(PolicyResponse,B)"></a>
+      <a id="→[B](B):(Settings,B)"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>, <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
+        <span title="gt4s: $u2192" class="implicit">→</span><span class="tparams">[<span name="B">B</span>]</span><span class="params">(<span name="y">y: <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span></span>)</span><span class="result">: (<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>, <span class="extype" name="scala.Predef.ArrowAssoc.→.B">B</span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Kadmin$$PolicyResponse@→[B](y:B):(A,B)" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.Settings@→[B](y:B):(A,B)" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt class="implicit">Implicit information</dt><dd>
-            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to
-            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>] performed by method ArrowAssoc in scala.Predef.
+            This member is added by an implicit conversion from <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to
+            <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>] performed by method ArrowAssoc in scala.Predef.
             
           </dd><dt>Definition Classes</dt><dd>ArrowAssoc</dd></dl></div>
     </li></ol>
@@ -641,38 +729,26 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a></h3>
-            </div><div class="parent" name="scala.Equals">
-              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Equals" class="extype" target="_top">Equals</a></h3>
-            </div><div class="parent" name="pt.tecnico.dsi.kadmin.akka.Kadmin.SuccessResponse">
-              <h3>Inherited from <a href="Kadmin$$SuccessResponse.html" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.SuccessResponse">SuccessResponse</a></h3>
-            </div><div class="parent" name="pt.tecnico.dsi.kadmin.akka.Kadmin.Response">
-              <h3>Inherited from <a href="Kadmin$$Response.html" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.Response">Response</a></h3>
-            </div><div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
         <div class="conversion" name="scala.Predef.any2stringadd">
               <h3>Inherited by implicit conversion any2stringadd from
-                <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>]
+                <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to <span class="extype" name="scala.Predef.any2stringadd">any2stringadd</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>]
               </h3>
             </div><div class="conversion" name="scala.Predef.StringFormat">
               <h3>Inherited by implicit conversion StringFormat from
-                <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>]
+                <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to <span class="extype" name="scala.Predef.StringFormat">StringFormat</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>]
               </h3>
             </div><div class="conversion" name="scala.Predef.Ensuring">
               <h3>Inherited by implicit conversion Ensuring from
-                <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>]
+                <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to <span class="extype" name="scala.Predef.Ensuring">Ensuring</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>]
               </h3>
             </div><div class="conversion" name="scala.Predef.ArrowAssoc">
               <h3>Inherited by implicit conversion ArrowAssoc from
-                <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a> to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Kadmin.PolicyResponse">PolicyResponse</a>]
+                <a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a> to <span class="extype" name="scala.Predef.ArrowAssoc">ArrowAssoc</span>[<a href="" class="extype" name="pt.tecnico.dsi.kadmin.akka.Settings">Settings</a>]
               </h3>
             </div>
         </div>

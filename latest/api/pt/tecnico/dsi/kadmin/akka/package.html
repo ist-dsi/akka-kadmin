@@ -66,8 +66,25 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="pt.tecnico.dsi.kadmin.akka.KadminActor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="KadminActorextendsActorwithActorLogging"></a>
+              <ol><li name="pt.tecnico.dsi.kadmin.akka.BlockingActor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BlockingActorextendsActorwithActorLogging"></a>
+      <a id="BlockingActor:BlockingActor"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="BlockingActor.html"><span class="name">BlockingActor</span></a><span class="result"> extends <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/com/typesafe/akka/akka-actor_2.11/2.4.7/akka-actor_2.11-2.4.7-javadoc.jar/!/index.html#akka.actor.Actor" class="extype" target="_top">Actor</a> with <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/com/typesafe/akka/akka-actor_2.11/2.4.7/akka-actor_2.11-2.4.7-javadoc.jar/!/index.html#akka.actor.ActorLogging" class="extype" target="_top">ActorLogging</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.package@BlockingActorextendsActorwithActorLogging" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="pt.tecnico.dsi.kadmin.akka.KadminActor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="KadminActorextendsActorwithPersistentActorwithActorLogging"></a>
       <a id="KadminActor:KadminActor"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -75,14 +92,34 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="KadminActor.html"><span class="name">KadminActor</span></a><span class="result"> extends <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/com/typesafe/akka/akka-actor_2.11/2.4.3/akka-actor_2.11-2.4.3-javadoc.jar/!/index.html#akka.actor.Actor" class="extype" target="_top">Actor</a> with <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/com/typesafe/akka/akka-actor_2.11/2.4.3/akka-actor_2.11-2.4.3-javadoc.jar/!/index.html#akka.actor.ActorLogging" class="extype" target="_top">ActorLogging</a></span>
+        <a href="KadminActor.html"><span class="name">KadminActor</span></a><span class="result"> extends <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/com/typesafe/akka/akka-actor_2.11/2.4.7/akka-actor_2.11-2.4.7-javadoc.jar/!/index.html#akka.actor.Actor" class="extype" target="_top">Actor</a> with <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/com/typesafe/akka/akka-persistence_2.11/2.4.7/akka-persistence_2.11-2.4.7-javadoc.jar/!/index.html#akka.persistence.PersistentActor" class="extype" target="_top">PersistentActor</a> with <a href="https://oss.sonatype.org/service/local/repositories/releases/archive/com/typesafe/akka/akka-actor_2.11/2.4.7/akka-actor_2.11-2.4.7-javadoc.jar/!/index.html#akka.actor.ActorLogging" class="extype" target="_top">ActorLogging</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.package@KadminActorextendsActorwithActorLogging" title="Permalink" target="_top">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.package@KadminActorextendsActorwithPersistentActorwithActorLogging" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
+    </li><li name="pt.tecnico.dsi.kadmin.akka.Settings" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SettingsextendsAnyRef"></a>
+      <a id="Settings:Settings"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Settings.html"><span class="name">Settings</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.package@SettingsextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">This class holds all the settings that parameterize akka-kadmin.</p><div class="fullcomment"><div class="comment cmt"><p>This class holds all the settings that parameterize akka-kadmin.</p><p>By default these settings are read from the Config obtained with <code>ConfigFactory.load()</code>.</p><p>You can change the settings in multiple ways:</p><ul><li>Change them in the default configuration file (e.g. application.conf)</li><li>Pass a different config holding your configurations: </li></ul><pre><span class="kw">new</span> Settings(yourConfig)</pre><p>    However it will be more succinct to pass your config directly to KadminActor: </p><pre>context.actorOf(Props(classOf[KadminActor], yourConfig))</pre><ul><li>Extend this class overriding the settings you want to redefine </li></ul><pre><span class="kw">object</span> YourSettings <span class="kw">extends</span> Settings() {
+  <span class="kw">override</span> <span class="kw">val</span> performDeduplication: <span class="std">Boolean</span> = <span class="kw">true</span>
+}
+context.actorOf(Props(classOf[KadminActor], YourSettings))</pre></div></div>
     </li></ol>
             </div>
 
@@ -103,6 +140,23 @@
       </span>
       </h4><span class="permalink">
       <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.package@Kadmin" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="pt.tecnico.dsi.kadmin.akka.KadminActor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="KadminActor"></a>
+      <a id="KadminActor:KadminActor"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="KadminActor$.html"><span class="name">KadminActor</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#pt.tecnico.dsi.kadmin.akka.package@KadminActor" title="Permalink" target="_top">
         <img src="../../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
