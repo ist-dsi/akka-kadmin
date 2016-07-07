@@ -23,34 +23,48 @@ class KadminActor(val settings: Settings = new Settings()) extends Actor with Pe
 
   def persistenceId: String = "kadminActor"
 
-  val blockingActor = context.actorOf(Props(classOf[BlockingActor], kadminSettings))
-  var counter = 0
+  private val blockingActor = context.actorOf(Props(classOf[BlockingActor], kadminSettings))
   //By using a SortedMap as opposed to a Map we can also extract the latest deliveryId per sender
-  var resultsPerSender = Map.empty[ActorPath, SortedMap[DeliveryId, Option[Response]]]
+  private var resultsPerSender = Map.empty[ActorPath, SortedMap[DeliveryId, Option[Response]]]
 
-  def performDeduplication(request: Request): Unit = {
+  def resultsOf(senderPath: ActorPath): SortedMap[DeliveryId, Option[Response]] = {
+    resultsPerSender.getOrElse(senderPath, SortedMap.empty[Long, Option[Response]])
+  }
+
+  def performDeduplication(deliveryId: DeliveryId)(onResend: ⇒ Unit)(onExpected: ⇒ Unit): Unit = {
     val recipient = sender()
     val senderPath = recipient.path
-    val deliveryId = request.deliveryId
-    val previousResults = resultsPerSender.getOrElse(senderPath, SortedMap.empty[Long, Option[Response]])
-    val expectedId = previousResults.keySet.lastOption.map(_ + 1).getOrElse(0L)
+    val expectedId = resultsOf(senderPath).keySet.lastOption.map(_ + 1).getOrElse(0L)
 
     def logIt(op: String, description: String): Unit = {
       log.debug(s"""Sender: $senderPath
-                  |DeliveryId ($deliveryId) $op ExpectedId ($expectedId)
-                  |$description""".stripMargin)
+                    |DeliveryId ($deliveryId) $op ExpectedId ($expectedId)
+                    |$description""".stripMargin)
     }
 
     if (deliveryId > expectedId) {
       logIt(">", "Ignoring message.")
     } else if (deliveryId < expectedId) {
-      previousResults.get(deliveryId).flatten match {
+      logIt("<", "Got a resend.")
+      onResend
+    } else { //deliveryId == expectedId
+      logIt("=", "Going to perform deduplication.")
+      onExpected
+    }
+  }
+
+  def performDeduplication(request: Request): Unit = {
+    val deliveryId = request.deliveryId
+    val recipient = sender()
+    val senderPath = recipient.path
+
+    performDeduplication(deliveryId) {
+      resultsOf(senderPath).get(deliveryId).flatten match {
         case Some(result) =>
-          logIt("<", s"Resending previously computed result: $result.")
+          log.debug(s"Resending previously computed result: $result.")
           recipient ! result
         case None =>
-          logIt("<", "There is no previously computed result. " +
-            s"Probably it is still being computed. Going to retry.")
+          log.debug("There is no previously computed result. Probably it is still being computed. Going to retry.")
           //We schedule the retry by sending it to the blockingActor, which in turn will send it back to us.
           //This strategy as a few advantages:
           // · The retry will only be processed in the blockingActor after the previous expects are executed.
@@ -61,9 +75,7 @@ class KadminActor(val settings: Settings = new Settings()) extends Actor with Pe
           //   resultsPerSender, guaranteeing we have the result (if it was not explicitly removed).
           blockingActor forward Retry(deliveryId)
       }
-    } else { //deliveryId == expectedId
-      logIt("==", "Going to perform deduplication.")
-
+    } {
       //By setting the result to None we ensure a bigger throughput since we allow this actor to continue
       //processing requests. Aka the expected id will be increased and we will be able to respond to messages
       //where DeliveryId < expectedID.
@@ -93,26 +105,32 @@ class KadminActor(val settings: Settings = new Settings()) extends Actor with Pe
     val previousResults = resultsPerSender.getOrElse(senderPath, SortedMap.empty[Long, Option[Response]])
     resultsPerSender += senderPath -> previousResults.updated(deliveryId, response)
 
-    if (saveSnapshotEveryXMessages > 0) {
-      counter += 1
-      if (counter >= saveSnapshotEveryXMessages) {
-        self ! SaveSnapshot
-      }
+    // This is not exactly every X SideEffectResult since we also persist RemoveResult.
+    // However the number of RemoveResults will be very small compared to the number of SideEffectResults.
+    if (saveSnapshotRoughlyEveryXMessages > 0 && lastSequenceNr % saveSnapshotRoughlyEveryXMessages == 0) {
+      self ! SaveSnapshot
     }
   }
 
   def receiveCommand: Receive = LoggingReceive {
     case RemoveDeduplicationResult(removeId, deliveryId) ⇒
-      persist(RemoveResult(sender(), removeId)) { remove ⇒
-        if (removeDelay == Duration.Zero) {
-          removeResult(remove.recipient.path, remove.removeId)
-        } else {
-          context.system.scheduler.scheduleOnce(removeDelay) {
-            self ! remove
-          }(context.dispatcher)
-        }
+      performDeduplication(deliveryId) {
         sender() ! Successful(deliveryId)
+      } {
+        persist(RemoveResult(sender(), removeId)) { remove ⇒
+          if (removeDelay == Duration.Zero) {
+            removeResult(remove.recipient.path, remove.removeId)
+          } else {
+            context.system.scheduler.scheduleOnce(removeDelay) {
+              self ! remove
+            }(context.dispatcher)
+          }
+          sender() ! Successful(deliveryId)
+          //We can store a None because we know a remove will always be successful
+          updateResult(remove.recipient.path, deliveryId, None)
+        }
       }
+
     case RemoveResult(recipient, removeId) ⇒
       removeResult(recipient.path, removeId)
 

@@ -1,7 +1,7 @@
 package pt.tecnico.dsi.kadmin.akka
 
 import akka.actor.{Actor, ActorLogging}
-import pt.tecnico.dsi.kadmin.{ErrorCase, Policy, Principal, UnknownError, Kadmin ⇒ KadminCore, Settings ⇒ KadminSettings}
+import pt.tecnico.dsi.kadmin.{ErrorCase, KadminUtils, Policy, Principal, Ticket, UnknownError, Kadmin ⇒ KadminCore, Settings ⇒ KadminSettings}
 import pt.tecnico.dsi.kadmin.akka.Kadmin._
 import pt.tecnico.dsi.kadmin.akka.KadminActor.{Retry, SideEffectResult}
 import work.martins.simon.expect.core.Expect
@@ -17,21 +17,18 @@ class BlockingActor(val kadminSettings: KadminSettings) extends Actor with Actor
 
   val kadmin = new KadminCore(kadminSettings)
 
-  def runExpect[R](deliveryId: DeliveryId, expect: ⇒ Expect[Either[ErrorCase, R]]): Unit = {
+  def runExpect[R](deliveryId: DeliveryId, expect: ⇒ Expect[R]): Unit = {
     Try {
       //The expect creation might fail if the arguments to the operation are invalid.
       expect
     } match {
       case Success(e) =>
-        val f = expect.run() map {
+        val f = e.run() map {
           case Right(principal: Principal) => PrincipalResponse(principal, deliveryId)
           case Right(policy: Policy) => PolicyResponse(policy, deliveryId)
-          case Right(()) => Successful(deliveryId)
-          case Right(unexpectedType) =>
-            val ex = new IllegalArgumentException(s"Got Right with unexpected type: $unexpectedType")
-            //log.error(ex, ex.getMessage)
-            Failed(UnknownError(Some(ex)), deliveryId)
-          case Left(ec) => Failed(ec, deliveryId)
+          case Right(()) | () => Successful(deliveryId)
+          case Left(ec: ErrorCase) => Failed(ec, deliveryId)
+          case tickets: Seq[_] ⇒ TicketsResponse(tickets.asInstanceOf[Seq[Ticket]], deliveryId)
         } recover {
           //Most probably the expect failed due to a TimeoutException and there isn't a when(timeout) declared
           case t: Throwable => Failed(UnknownError(Some(t)), deliveryId)
@@ -39,7 +36,6 @@ class BlockingActor(val kadminSettings: KadminSettings) extends Actor with Actor
 
         //We wait 3*scalaExpectTimeout because the expect might be composed with other expects (with returningExpect or flatMap)
         context.parent ! SideEffectResult(sender(), Await.result(f, 3 * scalaExpectTimeout))
-
       case Failure(t) =>
         context.parent ! SideEffectResult(sender(), Failed(UnknownError(Some(t)), deliveryId))
     }
@@ -91,5 +87,15 @@ class BlockingActor(val kadminSettings: KadminSettings) extends Actor with Actor
       runExpect(deliveryId, kadmin.deletePolicy(policy))
     case GetPolicy(policy, deliveryId) =>
       runExpect(deliveryId, kadmin.getPolicy(policy))
+
+    //=================================================================================
+    //==== Tickets actions ============================================================
+    //=================================================================================
+    case ObtainTGT(options, principal, password, keytab, deliveryId) ⇒
+      runExpect(deliveryId, KadminUtils.obtainTGT(options, principal, password, keytab))
+    case ListTickets(options, deliveryId) ⇒
+      runExpect(deliveryId, KadminUtils.listTickets(options))
+    case DestroyTickets(deliveryId) ⇒
+      runExpect(deliveryId, KadminUtils.destroyTickets())
   }
 }

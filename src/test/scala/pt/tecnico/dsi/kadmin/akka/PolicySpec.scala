@@ -5,7 +5,7 @@ import pt.tecnico.dsi.kadmin.akka.Kadmin._
 import scala.language.postfixOps
 
 class PolicySpec extends ActorSysSpec {
-  "addPolicy" should "idempotently succeed" in {
+  "addPolicy" should "idempotently succeed".in {
     val policyName = "add"
     val minimumLength = 6
     val minimumClasses = 2
@@ -27,7 +27,7 @@ class PolicySpec extends ActorSysSpec {
     policy.policy.minimumCharacterClasses shouldBe minimumClasses
   }
 
-  "an invalid operation" should "return failed" in {
+  "an invalid operation" should "return failed".in {
     val id = nextSeq()
     kadminActor ! ChangePrincipalPassword("somePrincipal", deliveryId = id)
     val failed = expectMsgClass(classOf[Failed])

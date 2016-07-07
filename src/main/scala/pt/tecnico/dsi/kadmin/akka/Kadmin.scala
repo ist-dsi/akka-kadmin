@@ -1,6 +1,8 @@
 package pt.tecnico.dsi.kadmin.akka
 
-import pt.tecnico.dsi.kadmin.{ErrorCase, ExpirationDateTime, Policy, Principal}
+import java.io.File
+
+import pt.tecnico.dsi.kadmin.{ErrorCase, ExpirationDateTime, Policy, Principal, Ticket}
 
 object Kadmin {
   type DeliveryId = Long
@@ -34,6 +36,12 @@ object Kadmin {
   case class DeletePolicy(policy: String, deliveryId: DeliveryId) extends Request
   case class GetPolicy(policy: String, deliveryId: DeliveryId) extends Request
 
+  //The TGT will be obtained in the machine that is running the kadmin actor
+  case class ObtainTGT(options: String = "", principal: String,
+                       password: Option[String] = None, keytab: Option[File] = None, deliveryId: DeliveryId) extends Request
+  case class ListTickets(options: String = "", deliveryId: DeliveryId) extends Request
+  case class DestroyTickets(deliveryId: DeliveryId) extends Request
+
   sealed trait Response {
     def deliveryId: DeliveryId
   }
@@ -43,6 +51,7 @@ object Kadmin {
   case class PrincipalResponse(principal: Principal, deliveryId: DeliveryId) extends SuccessResponse
   case class PolicyResponse(policy: Policy, deliveryId: DeliveryId) extends SuccessResponse
   case class KeytabResponse(keytab: Array[Byte], deliveryId: DeliveryId) extends SuccessResponse
+  case class TicketsResponse(tickets: Seq[Ticket], deliveryId: DeliveryId) extends  SuccessResponse
 
   sealed trait FailureResponse extends Response
   case class Failed(errorCase: ErrorCase, deliveryId: DeliveryId) extends FailureResponse

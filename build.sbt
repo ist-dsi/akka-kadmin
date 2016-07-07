@@ -30,7 +30,7 @@ scalacOptions ++= Seq(
 
 val akkaVersion = "2.4.7"
 libraryDependencies ++= Seq(
-  "pt.tecnico.dsi" %% "kadmin" % "5.3.0",
+  "pt.tecnico.dsi" %% "kadmin" % "5.3.1",
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
   "org.iq80.leveldb" % "leveldb" % "0.7",

@@ -4,22 +4,18 @@ import java.io.File
 
 import akka.actor.{ActorSystem, Props}
 import akka.testkit.{ImplicitSender, TestKit}
-import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.LazyLogging
 import org.apache.commons.io.FileUtils
-import org.scalatest.{BeforeAndAfterAll, FlatSpecLike, Matchers}
-
-import scala.concurrent.duration.DurationInt
+import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 abstract class ActorSysSpec extends TestKit(ActorSystem("akka-kadmin", ConfigFactory.load()))
   with Matchers
   with ImplicitSender
-  with FlatSpecLike
+  with WordSpecLike
   with BeforeAndAfterAll
   with LazyLogging {
 
-  implicit val timeout = Timeout(30.seconds)
   val kadminActor = system.actorOf(Props(new KadminActor()), "kadmin")
 
   private var seqCounter = 0L

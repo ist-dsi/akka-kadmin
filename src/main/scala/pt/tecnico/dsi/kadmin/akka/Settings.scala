@@ -41,7 +41,7 @@ class Settings(config: Config = ConfigFactory.load()) {
 
   val removeDelay = Duration(getDuration("remove-delay", TimeUnit.MILLISECONDS), TimeUnit.MILLISECONDS)
 
-  val saveSnapshotEveryXMessages = getInt("save-snapshot-every-X-messages")
+  val saveSnapshotRoughlyEveryXMessages = getInt("save-snapshot-roughly-every-X-messages")
 
   val kadminSettings: KadminSettings = {
     val path = "kadmin"
