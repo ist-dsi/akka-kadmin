@@ -28,7 +28,7 @@ scalacOptions ++= Seq(
   "-Ywarn-dead-code"                //Warn when dead code is identified.
 )
 
-val akkaVersion = "2.4.7"
+val akkaVersion = "2.4.8"
 libraryDependencies ++= Seq(
   "pt.tecnico.dsi" %% "kadmin" % "5.3.1",
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
