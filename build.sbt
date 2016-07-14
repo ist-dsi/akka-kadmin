@@ -33,14 +33,14 @@ libraryDependencies ++= Seq(
   "pt.tecnico.dsi" %% "kadmin" % "5.3.1",
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
-  "org.iq80.leveldb" % "leveldb" % "0.7",
-  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
+  "org.iq80.leveldb" % "leveldb" % "0.7" % Test,
+  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8" % Test,
   //Logging
-  "com.typesafe.akka" %% "akka-slf4j" % akkaVersion % "test",
-  "ch.qos.logback" % "logback-classic" % "1.1.7" % "test",
+  "com.typesafe.akka" %% "akka-slf4j" % akkaVersion % Test,
+  "ch.qos.logback" % "logback-classic" % "1.1.7" % Test,
   //Testing
-  "org.scalatest" %% "scalatest" % "2.2.6" % "test",
-  "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test",
+  "org.scalatest" %% "scalatest" % "2.2.6" % Test,
+  "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
 
   "commons-io" % "commons-io" % "2.5" % Test
 )

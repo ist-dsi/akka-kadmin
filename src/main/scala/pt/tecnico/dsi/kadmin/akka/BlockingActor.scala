@@ -1,7 +1,7 @@
 package pt.tecnico.dsi.kadmin.akka
 
 import akka.actor.{Actor, ActorLogging}
-import pt.tecnico.dsi.kadmin.{ErrorCase, KadminUtils, Policy, Principal, Ticket, UnknownError, Kadmin ⇒ KadminCore, Settings ⇒ KadminSettings}
+import pt.tecnico.dsi.kadmin.{Kadmin ⇒ KadminCore, Settings ⇒ KadminSettings, _}
 import pt.tecnico.dsi.kadmin.akka.Kadmin._
 import pt.tecnico.dsi.kadmin.akka.KadminActor.{Retry, SideEffectResult}
 import work.martins.simon.expect.core.Expect

@@ -46,13 +46,13 @@ object Kadmin {
     def deliveryId: DeliveryId
   }
 
-  sealed trait SuccessResponse extends Response
+  trait SuccessResponse extends Response
   case class Successful(deliveryId: DeliveryId) extends SuccessResponse
   case class PrincipalResponse(principal: Principal, deliveryId: DeliveryId) extends SuccessResponse
   case class PolicyResponse(policy: Policy, deliveryId: DeliveryId) extends SuccessResponse
   case class KeytabResponse(keytab: Array[Byte], deliveryId: DeliveryId) extends SuccessResponse
   case class TicketsResponse(tickets: Seq[Ticket], deliveryId: DeliveryId) extends  SuccessResponse
 
-  sealed trait FailureResponse extends Response
+  trait FailureResponse extends Response
   case class Failed(errorCase: ErrorCase, deliveryId: DeliveryId) extends FailureResponse
 }

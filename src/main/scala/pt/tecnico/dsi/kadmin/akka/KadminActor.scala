@@ -125,6 +125,7 @@ class KadminActor(val settings: Settings = new Settings()) extends Actor with Pe
               self ! remove
             }(context.dispatcher)
           }
+          //TODO: should we send the response and update the result after the delay. That it, instead of right away.
           sender() ! Successful(deliveryId)
           //We can store a None because we know a remove will always be successful
           updateResult(remove.recipient.path, deliveryId, None)
