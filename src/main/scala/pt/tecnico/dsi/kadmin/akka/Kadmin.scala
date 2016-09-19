@@ -7,7 +7,7 @@ import pt.tecnico.dsi.kadmin.{ErrorCase, ExpirationDateTime, Policy, Principal, 
 object Kadmin {
   type DeliveryId = Long
 
-  sealed trait Request {
+  sealed trait Request extends Serializable {
     def deliveryId: DeliveryId
   }
 
@@ -42,7 +42,7 @@ object Kadmin {
   case class ListTickets(options: String = "", deliveryId: DeliveryId) extends Request
   case class DestroyTickets(deliveryId: DeliveryId) extends Request
 
-  sealed trait Response {
+  sealed trait Response extends Serializable {
     def deliveryId: DeliveryId
   }
 
