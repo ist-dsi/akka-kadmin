@@ -1,20 +1,13 @@
 organization := "pt.tecnico.dsi"
 name := "akka-kadmin"
 
-val javaVersion = "1.8"
-initialize := {
-  val current  = sys.props("java.specification.version")
-  assert(current == javaVersion, s"Unsupported JDK: expected JDK $javaVersion installed, but instead got JDK $current.")
-}
 javacOptions ++= Seq(
-  "-source", javaVersion,
-  "-target", javaVersion,
   "-Xlint",
   "-encoding", "UTF-8",
   "-Dfile.encoding=utf-8"
 )
 
-scalaVersion := "2.12.0-RC1"
+scalaVersion := "2.12.0"
 scalacOptions ++= Seq(
   "-deprecation",                   //Emit warning and location for usages of deprecated APIs.
   "-encoding", "UTF-8",             //Use UTF-8 encoding. Should be default.
@@ -28,18 +21,18 @@ scalacOptions ++= Seq(
   "-Ywarn-dead-code"                //Warn when dead code is identified.
 )
 
-val akkaVersion = "2.4.10"
+val akkaVersion = "2.4.12"
 libraryDependencies ++= Seq(
-  "pt.tecnico.dsi" %% "kadmin" % "6.0.0",
+  "pt.tecnico.dsi" %% "kadmin" % "7.0.0",
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
-  "org.iq80.leveldb" % "leveldb" % "0.7" % Test,
+  "org.iq80.leveldb" % "leveldb" % "0.9" % Test,
   "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8" % Test,
   //Logging
   "com.typesafe.akka" %% "akka-slf4j" % akkaVersion % Test,
   "ch.qos.logback" % "logback-classic" % "1.1.7" % Test,
   //Testing
-  "org.scalatest" %% "scalatest" % "3.0.0" % Test,
+  "org.scalatest" %% "scalatest" % "3.0.1" % Test,
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
 
   "commons-io" % "commons-io" % "2.5" % Test
@@ -76,20 +69,20 @@ pomExtra :=
     </developer>
   </developers>
 
-coverageScalacPluginVersion := "1.3.0-RC1"
-
+dependencyUpdatesFailBuild := true
 import ReleaseTransformations._
 releaseProcess := Seq[ReleaseStep](
+  releaseStepCommand("dependencyUpdates"),
   checkSnapshotDependencies,
   inquireVersions,
   runClean,
-  ReleaseStep(action = Command.process("doc", _)),
-  //runTest, how to run ./test.sh??
+  releaseStepCommand("doc"),
+  releaseStepCommand("""eval "./test.sh" !"""),
   setReleaseVersion,
   tagRelease,
-  ReleaseStep(action = Command.process("ghpagesPushSite", _)),
-  ReleaseStep(action = Command.process("publishSigned", _)),
-  ReleaseStep(action = Command.process("sonatypeRelease", _)),
+  releaseStepCommand("ghpagesPushSite"),
+  releaseStepCommand("publishSigned"),
+  releaseStepCommand("sonatypeRelease"),
   pushChanges,
   setNextVersion
 )

@@ -14,7 +14,7 @@ services:
     build: ./kerberos-client
     environment:
       - CODACY_PROJECT_TOKEN=$CODACY_PROJECT_TOKEN
-      - HOST_USER_ID=$UID
+      - HOST_USER_ID=$UID # This allows us to chmod the current directory back to its original owner (instead of root).
     env_file: kerberos.env
     depends_on:
       - kdc-kadmin
@@ -23,6 +23,7 @@ services:
       # This bootstraps running sbt inside the container
       - ~/.sbt:/root/.sbt
       - ~/.ivy2:/root/.ivy2
+      - ~/.coursier:/root/.coursier
 
 # NOTE:
 #  "env_file: kerberos.env" is optional.

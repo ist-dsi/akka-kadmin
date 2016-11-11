@@ -1,6 +1,7 @@
 #!/bin/bash
 START=$(date +%s)
 
+# This allows us to chmod the current directory back to its original owner (instead of root).
 export UID
 
 sbt test:compile
@@ -13,7 +14,6 @@ cd docker-kerberos
 docker-compose build
 END_BUILDING=$(date +%s)
 echo -e "\n\t" $(($END_BUILDING-$END_COMPILE)) " seconds - Docker-compose build\n"
-
 BUILD_EXIT_CODE=$?
 if (( BUILD_EXIT_CODE != 0)); then
     exit BUILD_EXIT_CODE
@@ -26,7 +26,7 @@ END_UP=$(date +%s)
 echo -e "\n\t" $(($END_UP-$END_BUILDING)) " seconds - Docker-compose up\n"
 
 # Remove the containers to ensure a clean slate the next time this script in ran.
-docker-compose rm -f
+docker-compose rm --force
 
 END=$(date +%s)
 echo -e "\n\t" $(($END-$START)) "seconds - TOTAL"

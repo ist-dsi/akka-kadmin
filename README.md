@@ -1,14 +1,14 @@
 # akka-kadmin
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/pt.tecnico.dsi/akka-kadmin_2.11/badge.svg?maxAge=604800)](https://maven-badges.herokuapp.com/maven-central/pt.tecnico.dsi/akka-kadmin_2.11)
-[![Dependency Status](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.11/badge.svg?style=plastic&maxAge=604800)](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.11)
-[![Reference Status](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.11/reference_badge.svg?style=plastic&maxAge=604800)](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.11/references)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/pt.tecnico.dsi/akka-kadmin_2.12/badge.svg?maxAge=604800)](https://maven-badges.herokuapp.com/maven-central/pt.tecnico.dsi/akka-kadmin_2.12)
+[![Dependency Status](https://www.versioneye.com/user/projects/572b59e6a0ca350050840794/badge.svg?style=flat-square&maxAge=604800)](https://www.versioneye.com/user/projects/572b59e6a0ca350050840794)
+[![Reference Status](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.12/reference_badge.svg?style=plastic&maxAge=604800)](https://www.versioneye.com/java/pt.tecnico.dsi:akka-kadmin_2.12/references)
 [![Build Status](https://travis-ci.org/ist-dsi/akka-kadmin.svg?branch=master&style=plastic&maxAge=604800)](https://travis-ci.org/ist-dsi/akka-kadmin)
 [![Codacy Badge](https://api.codacy.com/project/badge/coverage/f24fdb8cf47a4db180c9187c476b23f0)](https://www.codacy.com/app/IST-DSI/akka-kadmin)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/f24fdb8cf47a4db180c9187c476b23f0)](https://www.codacy.com/app/IST-DSI/akka-kadmin)
-[![Scaladoc](http://javadoc-badge.appspot.com/pt.tecnico.dsi/akka-kadmin_2.11.svg?label=scaladoc&style=plastic&maxAge=604800)](https://ist-dsi.github.io/akka-kadmin/latest/api/#pt.tecnico.dsi.akka-kadmin.package)
+[![Scaladoc](http://javadoc-badge.appspot.com/pt.tecnico.dsi/akka-kadmin_2.12.svg?label=scaladoc&style=plastic&maxAge=604800)](https://ist-dsi.github.io/kadmin/latest/api/pt/tecnico/dsi/kadmin/akka/index.html)
 [![license](http://img.shields.io/:license-MIT-blue.svg)](LICENSE)
 
-[Latest scaladoc documentation](http://ist-dsi.github.io/akka-kadmin/latest/api/)
+[Latest scaladoc documentation](https://ist-dsi.github.io/kadmin/latest/api/pt/tecnico/dsi/kadmin/akka/index.html)
 
 The kadmin actor will perform a best effort deduplication. To do so the code **assumes** there is only **one**
 kadmin actor interacting with kerberos.
@@ -46,7 +46,7 @@ because these operations might not be idempotent in some cases.
 ## Install
 Add the following dependency to your `build.sbt`:
 ```sbt
-libraryDependencies += "pt.tecnico.dsi" %% "akka-kadmin" % "0.3.0"
+libraryDependencies += "pt.tecnico.dsi" %% "akka-kadmin" % "0.5.0"
 ```
 We use [semantic versioning](http://semver.org).
 
@@ -76,7 +76,7 @@ akka-kadmin {
 ```
 
 Alternatively you can pass your Config object to the Kadmin actor directly, or subclass the
-[Settings](https://ist-dsi.github.io/akka-kadmin/latest/api/#pt.tecnico.dsi.kadmin.akka.Settings) class for a mixed approach.
+[Settings](https://ist-dsi.github.io/kadmin/latest/api/pt/tecnico/dsi/kadmin/akka/Settings.html) class for a mixed approach.
 The scaladoc of the Settings class has examples explaining the different options.
 
 ## How to test akka-kadmin
